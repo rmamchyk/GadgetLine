@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>GadgetLine</title>
+
+    <script type="text/javascript" src="scripts/angular.min.js"></script>
+    <script type="text/javascript" src="scripts/angular-route.min.js"></script>
+    <script type="text/javascript" src="scripts/angular-animate.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="scripts/bootstrap.js"></script>
+    <script type="text/javascript" src="scripts/ui-bootstrap-tpls-2.5.0.min.js"></script>
+
+    <link rel="stylesheet" href="content/css/bootstrap.css"/>
+    <link rel="stylesheet" href="content/css/bootstrap-theme.css"/>
+    <link rel="stylesheet" href="content/css/common.css"/>
+
+    <!-- services -->
+    <script type="text/javascript" src="spa/Services/ApiService.js"></script>
+
+    <!-- controllers -->
+    <script type="text/javascript" src="spa/Controllers/MainController.js"></script>
+    <script type="text/javascript" src="spa/Controllers/ProductGridController.js"></script>
+    <script type="text/javascript" src="spa/Controllers/EditProductController.js"></script>
+
+    <script type="text/javascript" src="spa/App.js"></script>
+</head>
+<body>
+    <div ng-app="App" ng-controller="MainController">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <div id="main-logo">
+                        <a class="navbar-brand" href="#">
+                            <img src="content/images/logo.jpg" width="200"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Каталог товаров
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li ng-repeat="c in models.categories" ng-class="{'dropdown-submenu': c.SubCategories.length > 0}">
+                                    <a>{{c.Name}}</a>
+                                    <ul class="dropdown-menu" ng-if="c.SubCategories.length > 0">
+                                        <li ng-repeat="sc in c.SubCategories" ng-click="changeCategory($event, sc)">
+                                            <a>{{sc.Name}}</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="col-lg-5 col-sm-6 col-xs-12" style="margin: 10px 0;">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="searchQuery" my-enter="searchProducts()" placeholder="Поиск товаров">
+                            <span class="input-group-addon" style="padding: 5px 15px; font-size: 15px;"><span class="glyphicon glyphicon-search"></span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div id="main-content" class="container-fluid">
+            <div class="row">
+                
+                <!-- Categories menu -->
+                <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12">
+                    <div id="categories-menu-container">
+                        <div id="categories-menu-btn" ng-click="toggleCategoriesMenu()" toggle-class="menu-displayed">
+                            <span style="font-size: 16px;">Каталог товаров</span><span id="menu-arrow-icon" ng-class="{'glyphicon-menu-up': categoriesMenuOpened, 'glyphicon-menu-down': !categoriesMenuOpened}" class="glyphicon" aria-hidden="true"></span>
+                        </div>
+                        <div id="category-item-list" ng-class="{'menu-displayed' : categoriesMenuOpened, 'menu-hidden': !categoriesMenuOpened}">
+                            <ul>
+                                <li ng-repeat="c in models.categories" ng-click="changeCategory($event, c)">
+                                    <a href="#">{{c.Name}}</a>
+                                    <span ng-show="c.SubCategories.length > 0" class="category-subgroup-icon glyphicon glyphicon-triangle-right"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main page conent-->
+                <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12">
+                    <div ng-view></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="navbar navbar-inverse navbar-fixed-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2">
+                    <h6>Copyright &copy; 2013 {name}</h6>
+                </div><!-- end col-sm-2 -->
+
+                <div class="col-sm-4">
+                    <h6>About Us</h6>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div><!-- end col-sm-4 -->
+
+                <div class="col-sm-2">
+                    <h6>Navigation</h6>
+                    <ul class="unstyled">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="#">Links</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div><!-- end col-sm-2 -->
+
+                <div class="col-sm-2">
+                    <h6>Follow Us</h6>
+                    <ul class="unstyled">
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Google Plus</a></li>
+                    </ul>
+                </div><!-- end col-sm-2 -->
+
+                <div class="col-sm-2">
+                    <h6>Coded with <span class="glyphicon glyphicon-heart"></span> by Brad</h6>
+                </div><!-- end col-sm-2 -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </footer>
+</body>
+</html>

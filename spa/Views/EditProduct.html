@@ -1,0 +1,15 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Редактировать товар</h3>
+</div>
+<div class="modal-body">
+    <form>
+        <div class="form-group">
+            <label class="control-label">Название:</label>
+            <textarea rows="2" class="form-control" ng-model="product.Title"></textarea>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="save()">Сохранить</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">Отмена</button>
+</div>
