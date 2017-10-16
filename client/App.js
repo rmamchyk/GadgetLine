@@ -38,7 +38,7 @@ App.config(function ($routeProvider, $locationProvider) {
     $locationProvider.hashPrefix('');
     
     $routeProvider.when('/products', {
-        templateUrl: 'SPA/Views/ProductGrid.html',
+        templateUrl: 'SPA/views/productGrid.html',
         controller: ProductGridController
     }).otherwise({redirectTo: '/products'});
 });

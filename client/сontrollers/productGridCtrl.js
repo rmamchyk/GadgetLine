@@ -12,7 +12,7 @@
     $scope.editProduct = function(product) {
         var modalInstanse = $uibModal.open({
             animation: true,
-            templateUrl: '/client/Views/EditProduct.html',
+            templateUrl: '/client/views/editProduct.html',
             controller: 'EditProductController',
             size: '',
             resolve: {
