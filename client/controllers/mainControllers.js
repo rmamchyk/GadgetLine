@@ -1,52 +1,64 @@
-﻿app.controller('MainController',['$scope', '$http', function($scope, $http) {
-    $scope.models = {
-        categories: []
+﻿app.controller('MainController',['$http', function($http) {
+    var vm = this;
+    vm.names = ['roman', 'natalia', 'ruslan'];
+    vm.categories = [];
+    vm.selectedCategory = {id: 1};
+    vm.productsData = {
+            totalItems: 0,
+            pageNumber: 1,
+            pageSize: 15,
+            items: []
     };
+    vm.searchQuery = null;
+    vm.categoriesMenuOpened = true;
 
-    $scope.searchQuery = null;
-
-    $scope.selectedCategory = null;
-    $scope.categoriesMenuOpened = true;
-
-    $scope.searchProducts = function () {
-        if ($scope.getProductData && typeof $scope.getProductData == "function") {
-            $scope.getProductData();
+    //load products by page for selected category.
+    vm.searchProducts = function () {
+        var pageRequest = {
+            pageNumber: vm.productsData.pageNumber - 1,
+            pageSize: vm.productsData.pageSize,
+            categoryId: vm.selectedCategory.id
         };
-    };
 
-    $scope.changeCategory = function (event, selected) {
-        debugger;
-        $scope.selectedCategory = selected;
-        event.stopPropagation();
-    }
-
-    $scope.toggleCategoriesMenu = function() {
-        $scope.categoriesMenuOpened = !$scope.categoriesMenuOpened;
-    }
-
-    var getCategoryData = function() {
-        $.ajax({
-            type: 'GET',
-            url: '/categories',
-            contentType: 'application/json',
-            dataType: 'json',
-            success: function(result){
-                debugger;
-                $scope.models.categories = result;
-
-                if ($scope.models.categories.length > 0) {
-                    $scope.selectedCategory = $scope.models.categories[0];
-                    if ($scope.getProductData && typeof $scope.getProductData == "function") {
-                        $scope.getProductData();
-                    }
-                }
-            },
-            error: function(){
-                console.log("GET /categories request FAILED");
-            }
+        $http({ method: 'POST', url: '/products/search', data: JSON.stringify(pageRequest)})
+            .then(function(response){
+            var pageResult = response.data;
+            vm.productsData.items = pageResult.items;
+            vm.productsData.totalItems = pageResult.totalItems;
+        }, function(){
+            console.log("GET /products/search request FAILED");
         });
+    };
+    vm.searchProducts();
 
+    //load all category list.
+    $http({ method: 'GET', url: '/categories' }).then(function(response){
+        vm.categories = response.data;
+
+        if (vm.categories.length > 0) {
+            var prevCategoryId = vm.selectedCategory.id;
+            vm.selectedCategory = vm.categories[0];
+            if(prevCategoryId != vm.selectedCategory.id){
+                vm.productsData.pageNumber = 1;
+                vm.searchProducts();
+            }
+
+        }
+    }, function(){
+        console.log("GET /categories request FAILED");
+    });
+
+    vm.changeCategory = function (event, selected) {
+        var prevCategoryId = vm.selectedCategory.id;
+        vm.selectedCategory = selected;
+        if(prevCategoryId != vm.selectedCategory.id) {
+            vm.productsData.pageNumber = 1;
+            vm.searchProducts();
+        }
+        event.stopPropagation();
     };
 
-    getCategoryData();
+    vm.toggleCategoriesMenu = function() {
+        vm.categoriesMenuOpened = !vm.categoriesMenuOpened;
+    };
 }]);

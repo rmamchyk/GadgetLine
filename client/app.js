@@ -1,6 +1,4 @@
-﻿
-
-var app = angular.module('app', ['ui.router', 'ui.bootstrap']);
+﻿var app = angular.module('glApp', ['ui.router', 'ui.bootstrap']);
 
 //directives
 app.directive('toggleClass', function () {
@@ -36,8 +34,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $stateProvider
         .state('products', {
             url: '/products',
-            templateUrl: '../templates/productGrid.html',
-            controller: 'ProductGridController'
+            controller: 'MainController'
         });
 });
 

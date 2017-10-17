@@ -7,7 +7,7 @@ var Categories = {
         collection.find().toArray(function(err, docs) {
             if(err){
                 console.log(err);
-                console.log("Problem with loading Products from mongodb!");
+                console.log("Problem with loading Categories from mongodb!");
             }else{
                 callback(err, docs);
             }

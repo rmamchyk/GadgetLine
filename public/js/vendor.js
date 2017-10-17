@@ -17037,7 +17037,7 @@ function $CacheFactoryProvider() {
        * @description
        * A cache object used to store and retrieve data, primarily used by
        * {@link $http $http} and the {@link ng.directive:script script} directive to cache
-       * templates and other data.
+       * views and other data.
        *
        * ```js
        *  angular.module('superCache')
@@ -17291,7 +17291,7 @@ function $CacheFactoryProvider() {
  *
  * @description
  * The first time a template is used, it is loaded in the template cache for quick retrieval. You
- * can load templates directly into the cache in a `script` tag, or by consuming the
+ * can load views directly into the cache in a `script` tag, or by consuming the
  * `$templateCache` service directly.
  *
  * Adding via the `script` tag:
@@ -17332,7 +17332,7 @@ function $CacheFactoryProvider() {
  */
 function $TemplateCacheProvider() {
   this.$get = ['$cacheFactory', function($cacheFactory) {
-    return $cacheFactory('templates');
+    return $cacheFactory('views');
   }];
 }
 
@@ -17621,7 +17621,7 @@ function $TemplateCacheProvider() {
  * to its children elements.
  *
  * The 'isolate' scope object hash defines a set of local scope properties derived from attributes on the
- * directive's element. These local properties are useful for aliasing values for templates. The keys in
+ * directive's element. These local properties are useful for aliasing values for views. The keys in
  * the object hash map to the name of the property on the isolate scope; the values define how the property
  * is bound to the parent scope, via matching attributes on the directive's element:
  *
@@ -17830,8 +17830,8 @@ function $TemplateCacheProvider() {
  * for later when the template has been resolved.  In the meantime it will continue to compile and link
  * sibling and parent elements as though this element had not contained any directives.
  *
- * The compiler does not suspend the entire compilation to wait for templates to be loaded because this
- * would result in the whole app "stalling" until all templates are loaded asynchronously - even in the
+ * The compiler does not suspend the entire compilation to wait for views to be loaded because this
+ * would result in the whole app "stalling" until all views are loaded asynchronously - even in the
  * case when only one deeply nested directive has `templateUrl`.
  *
  * Template loading is asynchronous even if the template has been preloaded into the {@link $templateCache}
@@ -17888,7 +17888,7 @@ function $TemplateCacheProvider() {
 
  * <div class="alert alert-warning">
  * **Note:** The compile function cannot handle directives that recursively use themselves in their
- * own templates or compile functions. Compiling these directives results in an infinite loop and
+ * own views or compile functions. Compiling these directives results in an infinite loop and
  * stack overflow errors.
  *
  * This can be avoided by manually using $compile in the postLink function to imperatively compile
@@ -17965,7 +17965,7 @@ function $TemplateCacheProvider() {
  * compilation and linking has been suspended until that occurs.
  *
  * It is safe to do DOM transformation in the post-linking function on elements that are not waiting
- * for their async templates to be resolved.
+ * for their async views to be resolved.
  *
  *
  * ### Transclusion
@@ -19687,7 +19687,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
     /**
      * Once the directives have been collected, their compile functions are executed. This method
-     * is responsible for inlining directive templates as well as terminating the application
+     * is responsible for inlining directive views as well as terminating the application
      * of the directives if the terminal directive has been reached.
      *
      * @param {Array} directives Array of collected directives to execute their compile function.
@@ -19753,7 +19753,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
         if (directiveValue) {
 
-          // skip the check for directives with async templates, we'll check the derived sync
+          // skip the check for directives with async views, we'll check the derived sync
           // directive when the template arrives
           if (!directive.templateUrl) {
             if (isObject(directiveValue)) {
@@ -19840,7 +19840,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
                                         replaceDirective && replaceDirective.name, {
                                           // Don't pass in:
                                           // - controllerDirectives - otherwise we'll create duplicates controllers
-                                          // - newIsolateScopeDirective or templateDirective - combining templates with
+                                          // - newIsolateScopeDirective or templateDirective - combining views with
                                           //   element transclusion doesn't make sense.
                                           //
                                           // We need only nonTlbTranscludeDirective so that we prevent putting transclusion
@@ -21980,7 +21980,7 @@ function $HttpProvider() {
      * **Note:** Angular does not make a copy of the `data` parameter before it is passed into the `transformRequest` pipeline.
      * That means changes to the properties of `data` are not local to the transform function (since Javascript passes objects by reference).
      * For example, when calling `$http.get(url, $scope.myObject)`, modifications to the object's properties in a transformRequest
-     * function will be reflected on the scope and in any templates where the object is data-bound.
+     * function will be reflected on the scope and in any views where the object is data-bound.
      * To prevent this, transform functions should have no side-effects.
      * If you need to modify properties, it is recommended to make a copy of the data, or create new object to return.
      * </div>
@@ -23285,7 +23285,7 @@ function $InterpolateProvider() {
      *
      * @knownIssue
      * All directives and components must use the standard `{{` `}}` interpolation symbols
-     * in their templates. If you change the application interpolation symbols the {@link $compile}
+     * in their views. If you change the application interpolation symbols the {@link $compile}
      * service will attempt to denormalize the standard symbols to the custom symbols.
      * The denormalization process is not clever enough to know not to replace instances of the standard
      * symbols where they would not normally be treated as interpolation symbols. For example in the following
@@ -29290,7 +29290,7 @@ function adjustMatchers(matchers) {
  * can override it completely to change the behavior of `$sce`, the common case would
  * involve configuring the {@link ng.$sceDelegateProvider $sceDelegateProvider} instead by setting
  * your own whitelists and blacklists for trusting URLs used for loading AngularJS resources such as
- * templates.  Refer {@link ng.$sceDelegateProvider#resourceUrlWhitelist
+ * views.  Refer {@link ng.$sceDelegateProvider#resourceUrlWhitelist
  * $sceDelegateProvider.resourceUrlWhitelist} and {@link
  * ng.$sceDelegateProvider#resourceUrlBlacklist $sceDelegateProvider.resourceUrlBlacklist}
  */
@@ -29306,7 +29306,7 @@ function adjustMatchers(matchers) {
  * $sceDelegate service}, used as a delegate for {@link ng.$sce Strict Contextual Escaping (SCE)}.
  *
  * The `$sceDelegateProvider` allows one to get/set the whitelists and blacklists used to ensure
- * that the URLs used for sourcing AngularJS templates and other script-running URLs are safe (all
+ * that the URLs used for sourcing AngularJS views and other script-running URLs are safe (all
  * places that use the `$sce.RESOURCE_URL` context). See
  * {@link ng.$sceDelegateProvider#resourceUrlWhitelist $sceDelegateProvider.resourceUrlWhitelist}
  * and
@@ -29318,7 +29318,7 @@ function adjustMatchers(matchers) {
  * **Example**:  Consider the following case. <a name="example"></a>
  *
  * - your app is hosted at url `http://myapp.example.com/`
- * - but some of your templates are hosted on other domains you control such as
+ * - but some of your views are hosted on other domains you control such as
  *   `http://srv01.assets.example.com/`, `http://srv02.assets.example.com/`, etc.
  * - and you have an open redirect at `http://myapp.example.com/clickThru?...`.
  *
@@ -29340,10 +29340,10 @@ function adjustMatchers(matchers) {
  *  });
  * ```
  * Note that an empty whitelist will block every resource URL from being loaded, and will require
- * you to manually mark each one as trusted with `$sce.trustAsResourceUrl`. However, templates
+ * you to manually mark each one as trusted with `$sce.trustAsResourceUrl`. However, views
  * requested by {@link ng.$templateRequest $templateRequest} that are present in
  * {@link ng.$templateCache $templateCache} will not go through this check. If you have a mechanism
- * to populate your templates in that cache at config time, then it is a good idea to remove 'self'
+ * to populate your views in that cache at config time, then it is a good idea to remove 'self'
  * from that whitelist. This helps to mitigate the security impact of certain types of issues, like
  * for instance attacker-controlled `ng-includes`.
  */
@@ -29722,14 +29722,14 @@ function $SceDelegateProvider() {
  * }];
  * ```
  *
- * ## Impact on loading templates
+ * ## Impact on loading views
  *
  * This applies both to the {@link ng.directive:ngInclude `ng-include`} directive as well as
  * `templateUrl`'s specified by {@link guide/directive directives}.
  *
- * By default, Angular only loads templates from the same domain and protocol as the application
+ * By default, Angular only loads views from the same domain and protocol as the application
  * document.  This is done by calling {@link ng.$sce#getTrustedResourceUrl
- * $sce.getTrustedResourceUrl} on the template URL.  To load templates from other domains and/or
+ * $sce.getTrustedResourceUrl} on the template URL.  To load views from other domains and/or
  * protocols, you may either {@link ng.$sceDelegateProvider#resourceUrlWhitelist whitelist
  * them} or {@link ng.$sce#trustAsResourceUrl wrap it} into a trusted value.
  *
@@ -29738,8 +29738,8 @@ function $SceDelegateProvider() {
  * [Same Origin Policy](https://code.google.com/p/browsersec/wiki/Part2#Same-origin_policy_for_XMLHttpRequest)
  * and [Cross-Origin Resource Sharing (CORS)](http://www.w3.org/TR/cors/)
  * policy apply in addition to this and may further restrict whether the template is successfully
- * loaded.  This means that without the right CORS policy, loading templates from a different domain
- * won't work on all browsers.  Also, loading templates from `file://` URL does not work on some
+ * loaded.  This means that without the right CORS policy, loading views from a different domain
+ * won't work on all browsers.  Also, loading views from `file://` URL does not work on some
  * browsers.
  *
  * ## This feels like too much overhead
@@ -29755,8 +29755,8 @@ function $SceDelegateProvider() {
  * your application.
  *
  * The included {@link ng.$sceDelegate $sceDelegate} comes with sane defaults to allow you to load
- * templates in `ng-include` from your application's domain without having to even know about SCE.
- * It blocks loading templates from other domains or loading templates over http from an https
+ * views in `ng-include` from your application's domain without having to even know about SCE.
+ * It blocks loading views from other domains or loading views over http from an https
  * served document.  You can change these by setting your own custom {@link
  * ng.$sceDelegateProvider#resourceUrlWhitelist whitelists} and {@link
  * ng.$sceDelegateProvider#resourceUrlBlacklist blacklists} for matching such URLs.
@@ -29801,7 +29801,7 @@ function $SceDelegateProvider() {
  *      appropriate for use in a scheme, domain, etc. as it would match too much.  (e.g.
  *      http://**.example.com/ would match http://evil.com/?ignore=.example.com/ and that might
  *      not have been the intention.)  Its usage at the very end of the path is ok.  (e.g.
- *      http://foo.example.com/templates/**).
+ *      http://foo.example.com/views/**).
  *  - **RegExp** (*see caveat below*)
  *    - *Caveat*:  While regular expressions are powerful and offer great flexibility,  their syntax
  *      (and all the inevitable escaping) makes them *harder to maintain*.  It's easy to
@@ -30472,7 +30472,7 @@ function $TemplateRequestProvider() {
       function handleRequestFn(tpl, ignoreRequestError) {
         handleRequestFn.totalPendingRequests++;
 
-        // We consider the template cache holds only trusted templates, so
+        // We consider the template cache holds only trusted views, so
         // there's no need to go through whitelisting again for keys that already
         // are included in there. This also makes Angular accept any script
         // directive, no matter its name. However, we still need to unwrap trusted
@@ -31018,11 +31018,11 @@ function $$CookieReaderProvider() {
  * @description
  * Filters are used for formatting data displayed to the user.
  *
- * They can be used in view templates, controllers or services.Angular comes
+ * They can be used in view views, controllers or services.Angular comes
  * with a collection of [built-in filters](api/ng/filter), but it is easy to
  * define your own as well.
  *
- * The general syntax in templates is as follows:
+ * The general syntax in views is as follows:
  *
  * ```html
  * {{ expression [| filter_name[:parameter_value] ... ] }}
@@ -38151,7 +38151,7 @@ var ngIfDirective = ['$animate', '$compile', function($animate, $compile) {
  *
  * By default, the template URL is restricted to the same domain and protocol as the
  * application document. This is done by calling {@link $sce#getTrustedResourceUrl
- * $sce.getTrustedResourceUrl} on it. To load templates from other domains or protocols
+ * $sce.getTrustedResourceUrl} on it. To load views from other domains or protocols
  * you may either {@link ng.$sceDelegateProvider#resourceUrlWhitelist whitelist them} or
  * {@link $sce#trustAsResourceUrl wrap them} as trusted values. Refer to Angular's {@link
  * ng.$sce Strict Contextual Escaping}.
@@ -38195,7 +38195,7 @@ var ngIfDirective = ['$animate', '$compile', function($animate, $compile) {
   <example module="includeExample" deps="angular-animate.js" animations="true" name="ng-include">
     <file name="index.html">
      <div ng-controller="ExampleController">
-       <select ng-model="template" ng-options="t.name for t in templates">
+       <select ng-model="template" ng-options="t.name for t in views">
         <option value="">(blank)</option>
        </select>
        url of the template: <code>{{template.url}}</code>
@@ -38208,10 +38208,10 @@ var ngIfDirective = ['$animate', '$compile', function($animate, $compile) {
     <file name="script.js">
       angular.module('includeExample', ['ngAnimate'])
         .controller('ExampleController', ['$scope', function($scope) {
-          $scope.templates =
+          $scope.views =
             [{ name: 'template1.html', url: 'template1.html'},
              { name: 'template2.html', url: 'template2.html'}];
-          $scope.template = $scope.templates[0];
+          $scope.template = $scope.views[0];
         }]);
      </file>
     <file name="template1.html">
@@ -38457,7 +38457,7 @@ var ngIncludeFillContentDirective = ['$compile',
  * current scope.
  *
  * <div class="alert alert-danger">
- * This directive can be abused to add unnecessary amounts of logic into your templates.
+ * This directive can be abused to add unnecessary amounts of logic into your views.
  * There are only a few appropriate uses of `ngInit`, such as for aliasing special properties of
  * {@link ng.directive:ngRepeat `ngRepeat`}, as seen in the demo below; and for injecting data via
  * server side scripting. Besides these few cases, you should use {@link guide/controller controllers}
@@ -41274,7 +41274,7 @@ var ngPluralizeDirective = ['$locale', '$interpolate', '$log', function($locale,
  *
  * * When an item is added, a new instance of the template is added to the DOM.
  * * When an item is removed, its template instance is removed from the DOM.
- * * When items are reordered, their respective templates are reordered in the DOM.
+ * * When items are reordered, their respective views are reordered in the DOM.
  *
  * To minimize creation of DOM elements, `ngRepeat` uses a function
  * to "keep track" of all items in the collection and their corresponding DOM elements.

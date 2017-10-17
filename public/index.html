@@ -14,7 +14,7 @@
     <script type="text/javascript" src="js/application.js"></script>
 </head>
 <body>
-    <div ng-app="app" ng-controller="MainController">
+    <div ng-app="glApp" ng-controller="MainController as vm">
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -22,26 +22,6 @@
                         <a class="navbar-brand" href="#">
                             <img src="images/logo.jpg" width="200"/>
                         </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <ul class="nav navbar-nav">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Каталог товаров
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li ng-repeat="c in models.categories">
-                                    <a href="#">{{c.name}}</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <div class="col-lg-5 col-sm-6 col-xs-12" style="margin: 10px 0;">
-                        <div class="input-group">
-                            <input type="text" class="form-control" ng-model="searchQuery" my-enter="searchProducts()" placeholder="Поиск товаров">
-                            <span class="input-group-addon" style="padding: 5px 15px; font-size: 15px;"><span class="glyphicon glyphicon-search"></span></span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -53,13 +33,13 @@
                 <!-- Categories menu -->
                 <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12">
                     <div id="categories-menu-container">
-                        <div id="categories-menu-btn" ng-click="toggleCategoriesMenu()" toggle-class="menu-displayed">
-                            <span style="font-size: 16px;">Каталог товаров</span><span id="menu-arrow-icon" ng-class="{'glyphicon-menu-up': categoriesMenuOpened, 'glyphicon-menu-down': !categoriesMenuOpened}" class="glyphicon" aria-hidden="true"></span>
+                        <div id="categories-menu-btn" ng-click="vm.toggleCategoriesMenu()" toggle-class="menu-displayed">
+                            <span style="font-size: 16px;">Каталог товаров</span><span id="menu-arrow-icon" ng-class="{'glyphicon-menu-up': vm.categoriesMenuOpened, 'glyphicon-menu-down': !vm.categoriesMenuOpened}" class="glyphicon" aria-hidden="true"></span>
                         </div>
-                        <div id="category-item-list" ng-class="{'menu-displayed' : categoriesMenuOpened, 'menu-hidden': !categoriesMenuOpened}">
+                        <div id="category-item-list" ng-class="{'menu-displayed' : vm.categoriesMenuOpened, 'menu-hidden': !vm.categoriesMenuOpened}">
                             <ul>
-                                <li ng-repeat="c in models.categories" ng-click="changeCategory($event, c)">
-                                    <a href="#">{{c.name}}</a>
+                                <li ng-repeat="c in vm.categories" ng-click="vm.changeCategory($event, c)">
+                                    <a>{{c.name}}</a>
                                 </li>
                             </ul>
                         </div>
@@ -68,7 +48,7 @@
 
                 <!-- Main page conent-->
                 <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12">
-                    <div ng-view></div>
+                    <products-grid data="vm.productsData"></products-grid>
                 </div>
             </div>
         </div>
