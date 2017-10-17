@@ -1,5 +1,4 @@
-﻿app.controller('ProductGridController', ['$scope', 'apiService', '$uibModal', '$log',
-    function($scope, apiService, $uibModal, $log) {
+﻿app.controller('ProductGridController', ['$scope', '$http', '$uibModal', function($scope, $http, $uibModal) {
     $scope.data = {
         productsData: {
             totalItems: 0,
@@ -13,7 +12,7 @@
     $scope.editProduct = function(product) {
         var modalInstanse = $uibModal.open({
             animation: true,
-            templateUrl: '/public/templates/editProduct.html',
+            templateUrl: '../templates/editProduct.html',
             controller: 'EditProductController',
             size: '',
             resolve: {
@@ -30,7 +29,6 @@
 
     $scope.getProductData = function() {
         if ($scope.selectedCategory) {
-
 
             var db = [
                 {
@@ -64,7 +62,7 @@
             ];
 
             $scope.data.productsData.data = db.filter(function(prod){
-                return prod.CategoryId == $scope.selectedCategory.Id;
+                return prod.CategoryId == $scope.selectedCategory.id;
             });
 
             $scope.data.productsData.totalItems = 4;
@@ -75,7 +73,7 @@
         $scope.getProductData();
     }
 
-    $scope.$watch('selectedCategory', function() {
+    $scope.$watch('selectedCategory', function(){
         $scope.data.productsData.pageNumber = 1;
         $scope.getProductData();
     });

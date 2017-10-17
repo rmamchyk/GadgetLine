@@ -1,4 +1,6 @@
-﻿var app = angular.module('app', ['ngRoute', 'ui.bootstrap']);
+﻿
+
+var app = angular.module('app', ['ui.router', 'ui.bootstrap']);
 
 //directives
 app.directive('toggleClass', function () {
@@ -27,16 +29,15 @@ app.directive('myEnter', function () {
 });
 
 //app config
-app.config(function ($routeProvider, $locationProvider) {
+app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.hashPrefix('');
-    
-    $routeProvider
-        .when('/products', {
-            templateUrl: 'templates/productGrid.html',
+    $urlRouterProvider.otherwise('/products');
+
+    $stateProvider
+        .state('products', {
+            url: '/products',
+            templateUrl: '../templates/productGrid.html',
             controller: 'ProductGridController'
-        })
-        .otherwise({
-            redirectTo: '/products'
         });
 });
 

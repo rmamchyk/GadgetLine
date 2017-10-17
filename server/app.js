@@ -4,19 +4,23 @@ path = require('path');
 var express = require('express');
 var app = express();
 
-console.log(__dirname);
+// Connect to Mongo
+var dbConnection = require(path.join(__dirname, 'services', 'dbConnection'));
+dbConnection.connect();
 
-//middleware
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-//methods
+// Load controllers
+app.use(require(path.join(__dirname, 'controllers','routes')))
+
+//Api
 app.get('/', function(request, response){
-    response.send("Hi there! I'm GadgetLine site\n");
+    response.send("Hi there! I'm GadgetLine express service.\n");
 });
 
 app.listen(3000);
 
+module.exports = app;
+
 // Set absolute paths for partials
 app.locals.basedir = path.join(__dirname, '');
-
-module.exports = app;

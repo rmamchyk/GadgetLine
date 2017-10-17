@@ -1,4 +1,6 @@
-var app = angular.module('app', ['ngRoute', 'ui.bootstrap']);
+
+
+var app = angular.module('app', ['ui.router', 'ui.bootstrap']);
 
 //directives
 app.directive('toggleClass', function () {
@@ -27,17 +29,58 @@ app.directive('myEnter', function () {
 });
 
 //app config
-app.config(function ($routeProvider, $locationProvider) {
+app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.hashPrefix('');
-    
-    $routeProvider
-        .when('/products', {
-            templateUrl: 'templates/productGrid.html',
+    $urlRouterProvider.otherwise('/products');
+
+    $stateProvider
+        .state('products', {
+            url: '/products',
+            templateUrl: '../templates/productGrid.html',
             controller: 'ProductGridController'
-        })
-        .otherwise({
-            redirectTo: '/products'
         });
+});
+
+
+app.service('apiService', function($http) {
+    var self = this;
+
+    self.getApiCall = function (methodName, callback) {
+        $http.get(methodName)
+            .then(function (response) {
+                var event = {
+                    result: response.data,
+                    hasErrors: false
+                };
+                callback(event);
+            }, function (response) {
+                var event = {
+                    result: null,
+                    hasErrors: true,
+                    error: response.statusText
+                }
+                callback(event);
+            });
+    };
+
+    self.postApiCall = function (methodName, obj, callback) {
+        $http.post(methodName, obj)
+            .then(function (response) {
+                var event = {
+                    result: response.data,
+                    hasErrors: false
+                };
+                callback(event);
+            }, function (response) {
+                debugger;
+                var event = {
+                    result: null,
+                    hasErrors: true,
+                    error: response.statusText
+                }
+                callback(event);
+            });
+    };
 });
 
 
@@ -52,7 +95,7 @@ app.controller('EditProductController', ['$scope', '$uibModalInstance', function
         $uibModalInstance.close($scope.product);
     };
 }]);
-app.controller('MainController',['$scope', 'apiService', function($scope, apiService) {
+app.controller('MainController',['$scope', '$http', function($scope, $http) {
     $scope.models = {
         categories: []
     };
@@ -78,24 +121,32 @@ app.controller('MainController',['$scope', 'apiService', function($scope, apiSer
     }
 
     var getCategoryData = function() {
+        $.ajax({
+            type: 'GET',
+            url: '/categories',
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function(result){
+                debugger;
+                $scope.models.categories = result;
 
-        $scope.models.categories = [
-            {Id: 1, Name: 'Планшеты', ParentId: null},
-            {Id: 2, Name: 'Ноутбуки', ParentId: null},
-            {Id: 3, Name: 'Телефоны', ParentId: null}
-        ];
-
-        if ($scope.models.categories.length > 0) {
-            $scope.selectedCategory = $scope.models.categories[0];
-            if ($scope.getProductData && typeof $scope.getProductData == "function") {
-                $scope.getProductData();
+                if ($scope.models.categories.length > 0) {
+                    $scope.selectedCategory = $scope.models.categories[0];
+                    if ($scope.getProductData && typeof $scope.getProductData == "function") {
+                        $scope.getProductData();
+                    }
+                }
+            },
+            error: function(){
+                console.log("GET /categories request FAILED");
             }
-        }
+        });
+
     };
 
     getCategoryData();
 }]);
-app.controller('ProductGridController', ['$scope', 'apiService', '$uibModal', '$log',
+app.controller('ProductGridController', ['$scope', '$http', '$uibModal', '$log',
     function($scope, apiService, $uibModal, $log) {
     $scope.data = {
         productsData: {
@@ -110,7 +161,7 @@ app.controller('ProductGridController', ['$scope', 'apiService', '$uibModal', '$
     $scope.editProduct = function(product) {
         var modalInstanse = $uibModal.open({
             animation: true,
-            templateUrl: '/public/templates/editProduct.html',
+            templateUrl: '../templates/editProduct.html',
             controller: 'EditProductController',
             size: '',
             resolve: {
@@ -161,7 +212,7 @@ app.controller('ProductGridController', ['$scope', 'apiService', '$uibModal', '$
             ];
 
             $scope.data.productsData.data = db.filter(function(prod){
-                return prod.CategoryId == $scope.selectedCategory.Id;
+                return prod.CategoryId == $scope.selectedCategory.id;
             });
 
             $scope.data.productsData.totalItems = 4;
@@ -177,44 +228,3 @@ app.controller('ProductGridController', ['$scope', 'apiService', '$uibModal', '$
         $scope.getProductData();
     });
 }]);
-app.service('apiService', function($http) {
-    var self = this;
-
-    self.getApiCall = function (ctrlName, methodName, callback) {
-        $http.get('api/' + ctrlName + '/' + methodName)
-            .then(function (response) {
-                var event = {
-                    result: response.data,
-                    hasErrors: false
-                };
-                callback(event);
-            }, function (response) {
-                var event = {
-                    result: null,
-                    hasErrors: true,
-                    error: response.statusText
-                }
-                callback(event);
-            });
-    };
-
-    self.postApiCall = function (controllerName, methodName, obj, callback) {
-        $http.post('api/' + controllerName + '/' + methodName, obj)
-            .then(function (response) {
-                var event = {
-                    result: response.data,
-                    hasErrors: false
-                };
-                callback(event);
-            }, function (response) {
-                debugger;
-                var event = {
-                    result: null,
-                    hasErrors: true,
-                    error: response.statusText
-                }
-                callback(event);
-            });
-    };
-});
-

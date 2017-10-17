@@ -31,13 +31,8 @@
                                 <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Каталог товаров
                             </a>
                             <ul class="dropdown-menu">
-                                <li ng-repeat="c in models.categories" ng-class="{'dropdown-submenu': c.SubCategories.length > 0}">
-                                    <a>{{c.Name}}</a>
-                                    <ul class="dropdown-menu" ng-if="c.SubCategories.length > 0">
-                                        <li ng-repeat="sc in c.SubCategories" ng-click="changeCategory($event, sc)">
-                                            <a>{{sc.Name}}</a>
-                                        </li>
-                                    </ul>
+                                <li ng-repeat="c in models.categories">
+                                    <a href="#">{{c.name}}</a>
                                 </li>
                             </ul>
                         </li>
@@ -64,8 +59,7 @@
                         <div id="category-item-list" ng-class="{'menu-displayed' : categoriesMenuOpened, 'menu-hidden': !categoriesMenuOpened}">
                             <ul>
                                 <li ng-repeat="c in models.categories" ng-click="changeCategory($event, c)">
-                                    <a href="#">{{c.Name}}</a>
-                                    <span ng-show="c.SubCategories.length > 0" class="category-subgroup-icon glyphicon glyphicon-triangle-right"></span>
+                                    <a href="#">{{c.name}}</a>
                                 </li>
                             </ul>
                         </div>
