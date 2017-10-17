@@ -2,7 +2,7 @@
   "name": "gadgetline",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,13 +10,18 @@
     "type": "git",
     "url": "git+https://github.com/rmamchyk/GadgetLine.git"
   },
-  "author": "",
+  "author": "rmamchyk <roman.mamchyk@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/rmamchyk/GadgetLine/issues"
   },
   "homepage": "https://github.com/rmamchyk/GadgetLine#readme",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-uglify": "^3.0.0",
+    "gulp-watch": "^4.3.11",
+    "run-sequence": "^2.2.0"
   }
 }

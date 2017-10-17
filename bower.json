@@ -1,0 +1,17 @@
+{
+  "name": "gadgetline",
+  "description": "",
+  "main": "app.js",
+  "authors": [
+    "rmamchyk <roman.mamchyk@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/rmamchyk/GadgetLine",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

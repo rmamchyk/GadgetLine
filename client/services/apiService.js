@@ -1,8 +1,8 @@
-﻿var apiService = function($http) {
+﻿app.service('apiService', function($http) {
     var self = this;
 
-    self.getApiCall = function (controllerName, methodName, callback) {
-        $http.get('api/' + controllerName + '/' + methodName)
+    self.getApiCall = function (ctrlName, methodName, callback) {
+        $http.get('api/' + ctrlName + '/' + methodName)
             .then(function (response) {
                 var event = {
                     result: response.data,
@@ -37,4 +37,5 @@
                 callback(event);
             });
     };
-};
+});
+

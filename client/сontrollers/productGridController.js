@@ -1,4 +1,5 @@
-﻿var ProductGridController = function(apiService, $scope, $uibModal, $log) {
+﻿app.controller('ProductGridController', ['$scope', 'apiService', '$uibModal', '$log',
+    function($scope, apiService, $uibModal, $log) {
     $scope.data = {
         productsData: {
             totalItems: 0,
@@ -12,7 +13,7 @@
     $scope.editProduct = function(product) {
         var modalInstanse = $uibModal.open({
             animation: true,
-            templateUrl: '/client/views/editProduct.html',
+            templateUrl: '/public/templates/editProduct.html',
             controller: 'EditProductController',
             size: '',
             resolve: {
@@ -78,4 +79,4 @@
         $scope.data.productsData.pageNumber = 1;
         $scope.getProductData();
     });
-};
+}]);

@@ -1,4 +1,4 @@
-﻿var EditProductController = function ($scope, $uibModalInstance, data) {
+﻿app.controller('EditProductController', ['$scope', '$uibModalInstance', function ($scope, $uibModalInstance, data) {
     $scope.product = data;
 
     $scope.cancel = function() {
@@ -8,4 +8,4 @@
     $scope.save = function() {
         $uibModalInstance.close($scope.product);
     };
-};
+}]);

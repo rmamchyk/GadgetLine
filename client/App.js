@@ -1,7 +1,7 @@
-﻿var App = angular.module('App', ['ngRoute', 'ui.bootstrap']);
+﻿var app = angular.module('app', ['ngRoute', 'ui.bootstrap']);
 
 //directives
-App.directive('toggleClass', function () {
+app.directive('toggleClass', function () {
     return {
         restrict: 'A',
         link: function (scope, element, attrs) {
@@ -11,8 +11,9 @@ App.directive('toggleClass', function () {
         }
     };
 });
-App.directive('myEnter', function () {
+app.directive('myEnter', function () {
     return function (scope, element, attrs) {
+
         element.bind("keydown keypress", function (event) {
             if (event.which === 13) {
                 scope.$apply(function () {
@@ -25,21 +26,17 @@ App.directive('myEnter', function () {
     };
 });
 
-//services
-App.service('apiService', apiService);
-
-//controllers
-App.controller('MainController',['apiService', '$scope', MainController]);
-App.controller('ProductGridController', ['apiService', '$scope', '$uibModal', '$log', ProductGridController]);
-App.controller('EditProductController', EditProductController);
-
 //app config
-App.config(function ($routeProvider, $locationProvider) {
+app.config(function ($routeProvider, $locationProvider) {
     $locationProvider.hashPrefix('');
     
-    $routeProvider.when('/products', {
-        templateUrl: 'SPA/views/productGrid.html',
-        controller: ProductGridController
-    }).otherwise({redirectTo: '/products'});
+    $routeProvider
+        .when('/products', {
+            templateUrl: 'templates/productGrid.html',
+            controller: 'ProductGridController'
+        })
+        .otherwise({
+            redirectTo: '/products'
+        });
 });
 
