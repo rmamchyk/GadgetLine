@@ -8,7 +8,7 @@ exports.connect = function() {
             console.log("Problem with mongo, help!");
             process.exit(1)
         }else{
-            console.log("Yay, mongo!")
+            console.log("Connected to MongoDb")
             mongo.DB = db
         }
     });

@@ -15,10 +15,12 @@ app.use(require(path.join(__dirname, 'controllers','routes')))
 
 //Api
 app.get('/', function(request, response){
-    response.send("Hi there! I'm GadgetLine express service.\n");
+    response.send("Hi there! I'm GadgetLine ExpressJS service.\n");
 });
 
-app.listen(3001);
+app.listen(3001, function(){
+    console.log('Listening on port 3001...');
+});
 
 module.exports = app;
 
