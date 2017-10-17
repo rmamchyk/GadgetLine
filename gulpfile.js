@@ -44,10 +44,10 @@ var options = {
         destVendorFile: 'vendor.js',
         destDir: 'public/js'
     },
-
     css: {
         files: [
-            'client/css/*.css'
+            'client/css/common.css',
+            'client/css/**/*.css'
         ],
         vendorFiles: [
             'bower_components/bootstrap/dist/css/bootstrap.css',

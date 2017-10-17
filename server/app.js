@@ -18,8 +18,8 @@ app.get('/', function(request, response){
     response.send("Hi there! I'm GadgetLine ExpressJS service.\n");
 });
 
-app.listen(3001, function(){
-    console.log('Listening on port 3001...');
+app.listen(8181, function(){
+    console.log('Listening on port 8181...');
 });
 
 module.exports = app;

@@ -141,11 +141,12 @@ span.category-subgroup-icon {
     color: white;
 }
 
-/*----- Page footer ------*/
-footer {
+/*----- Page footer -----*/
+footer.navbar {
     background: #333;
     color: #eee;
     font-size: 11px;
-    padding: 20px;
+    padding: 10px;
+    margin: 0;
 }
 

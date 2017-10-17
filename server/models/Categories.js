@@ -4,7 +4,7 @@ var Categories = {
     all: function(callback){
         var collection = mongo.DB.collection('categories');
 
-        collection.find().toArray(function(err, docs) {
+        collection.find({parentId: null}).toArray(function(err, docs) {
             if(err){
                 console.log(err);
                 console.log("Problem with loading Categories from mongodb!");
