@@ -15,6 +15,8 @@
 </head>
 <body>
     <div ng-app="glApp" ng-controller="MainController as vm">
+
+        <!-- Page header -->
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -25,7 +27,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-5 col-sm-6 col-xs-12" style="margin: 10px 0;">
+                    <div class="col-lg-4 col-sm-6 col-xs-12" style="margin: 10px 0;">
                         <div class="input-group">
                             <input type="text" class="form-control" ng-model="searchQuery" my-enter="searchProducts()" placeholder="Поиск товаров">
                             <span class="input-group-addon" style="padding: 5px 15px; font-size: 15px;"><span class="glyphicon glyphicon-search"></span></span>
@@ -35,14 +37,15 @@
             </div>
         </nav>
 
+        <!-- Page body -->
         <div id="main-content" class="container-fluid">
             <div class="row">
-                
                 <!-- Categories menu -->
                 <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12">
                     <div id="categories-menu-container">
                         <div id="categories-menu-btn" ng-click="vm.toggleCategoriesMenu()" toggle-class="menu-displayed">
-                            <span style="font-size: 16px;">Каталог товаров</span><span id="menu-arrow-icon" ng-class="{'glyphicon-menu-up': vm.categoriesMenuOpened, 'glyphicon-menu-down': !vm.categoriesMenuOpened}" class="glyphicon" aria-hidden="true"></span>
+                            <span style="font-size: 16px;">Каталог товаров</span><span id="menu-arrow-icon"
+                                ng-class="{'glyphicon-menu-up': vm.categoriesMenuOpened, 'glyphicon-menu-down': !vm.categoriesMenuOpened}" class="glyphicon" aria-hidden="true"></span>
                         </div>
                         <div id="category-item-list" ng-class="{'menu-displayed' : vm.categoriesMenuOpened, 'menu-hidden': !vm.categoriesMenuOpened}">
                             <ul>
@@ -54,14 +57,14 @@
                     </div>
                 </div>
 
-                <!-- Main page conent-->
                 <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12">
-                    <products-grid data="vm.productsData"></products-grid>
+                    <products-view data="vm.productsData"></products-view>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Page footer -->
     <footer class="navbar navbar-inverse navbar-bottom">
         <div class="container">
             <div class="row">
@@ -96,7 +99,6 @@
                     </ul>
                 </div>
                 <div class="col-sm-2">
-
                 </div>
             </div>
         </div>

@@ -8,10 +8,11 @@ var app = express();
 var dbConnection = require(path.join(__dirname, 'services', 'dbConnection'));
 dbConnection.connect();
 
+//app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Load controllers
-app.use(require(path.join(__dirname, 'controllers','routes')))
+app.use(require(path.join(__dirname, 'controllers','routes')));
 
 //Api
 app.get('/', function(request, response){

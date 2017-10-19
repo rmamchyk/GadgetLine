@@ -51,6 +51,18 @@ app.component('productsGrid', {
     },
     controllerAs: 'vm'
 });
+app.component('productsView', {
+    templateUrl: '../views/components/products-view.html',
+    bindings: {
+        data: '='
+    },
+    controller: function(){
+        this.pageChanged = function(){
+
+        }
+    },
+    controllerAs: 'vm'
+});
 app.controller('EditProductController', ['$scope', '$uibModalInstance', function ($scope, $uibModalInstance, productData) {
     $scope.product = productData;
 

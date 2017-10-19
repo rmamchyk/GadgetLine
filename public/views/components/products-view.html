@@ -1,0 +1,18 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6 col-md-4 col-lg-3 product-view-item" ng-repeat="item in vm.data.items">
+            <div class="thumbnail">
+                <img src="../../images/no-photo.png">
+                <div class="caption">
+                    <a href="#" class="product-title">{{item.title}}</a>
+                    <div class="actions">
+                        <button type="button" class="btn btn-danger add-to-cart-btn">
+                            <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Купить
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
