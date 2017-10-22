@@ -73,7 +73,7 @@ body {
     border: #ddd 1px solid;
     -moz-border-top-right-radius: 3px;
     -moz-border-top-left-radius: 3px;
-    -webkit-border-top-right-radius: -radius: 3px;
+    -webkit-border-top-right-radius: 3px;
     -webkit-border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
@@ -148,31 +148,53 @@ span.category-subgroup-icon {
 
 
 /*----- Product View Item -----*/
+.product-list-container {
+    padding: 0;
+}
 .product-view-item {
-    padding: 8px !important;
+    padding: 5px;
 }
 .product-view-item .thumbnail {
     margin: 0;
+    padding: 0;
 }
 .product-view-item .thumbnail .caption {
     margin: 0;
     position: relative;
     line-height: 16px;
+    height: 100px;
 }
 .product-view-item .thumbnail .caption a.product-title {
     font-family: Arial,Helvetica,FreeSans,"Liberation Sans","Nimbus Sans L",sans-serif;
     font-size: 13px;
     color: black;
     display: inline-block;
-    padding-bottom: 7px;
+    margin-bottom: 7px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    max-height: 50px;
 }
 .product-view-item .thumbnail .caption a.product-title:hover {
     color: brown;
 }
 
+.product-view-item .actions {
+    width: 100%;
+}
+
 .product-view-item .add-to-cart-btn {
+    font-size: 14px;
+    padding: 3px 8px;
+}
+
+.product-view-item .product-price {
+    font-family: Arial,Helvetica,FreeSans,"Liberation Sans","Nimbus Sans L",sans-serif;
     font-size: 16px;
-    padding: 4px 8px;
+    font-weight: bold;
+    color: brown;
+    padding: 6px 0;
 }
 
 /*----- Page footer -----*/
