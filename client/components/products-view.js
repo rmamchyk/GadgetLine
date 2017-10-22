@@ -3,10 +3,6 @@ app.component('productsView', {
     bindings: {
         data: '='
     },
-    controller: function(){
-        this.pageChanged = function(){
-
-        }
-    },
+    controller: function(){ },
     controllerAs: 'vm'
 });

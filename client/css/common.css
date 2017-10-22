@@ -169,7 +169,7 @@ span.category-subgroup-icon {
     font-size: 13px;
     color: black;
     display: inline-block;
-    margin-bottom: 7px;
+    margin-bottom: 5px;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -195,6 +195,11 @@ span.category-subgroup-icon {
     font-weight: bold;
     color: brown;
     padding: 6px 0;
+}
+
+.product-list-pagination {
+    display: block;
+    text-align: center;
 }
 
 /*----- Page footer -----*/

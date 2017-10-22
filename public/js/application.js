@@ -44,11 +44,7 @@ app.component('productsGrid', {
     bindings: {
         data: '='
     },
-    controller: function(){
-        this.pageChanged = function(){
-
-        }
-    },
+    controller: function(){ },
     controllerAs: 'vm'
 });
 app.component('productsView', {
@@ -56,11 +52,7 @@ app.component('productsView', {
     bindings: {
         data: '='
     },
-    controller: function(){
-        this.pageChanged = function(){
-
-        }
-    },
+    controller: function(){ },
     controllerAs: 'vm'
 });
 app.controller('EditProductController', ['$scope', '$uibModalInstance', function ($scope, $uibModalInstance, productData) {
@@ -74,7 +66,7 @@ app.controller('EditProductController', ['$scope', '$uibModalInstance', function
         $uibModalInstance.close($scope.product);
     };
 }]);
-app.controller('MainController',['$http', function($http) {
+app.controller('MainController',['$http', '$scope', function($http, $scope) {
     var vm = this;
     vm.names = ['roman', 'natalia', 'ruslan'];
     vm.categories = [];
@@ -88,7 +80,6 @@ app.controller('MainController',['$http', function($http) {
     vm.searchQuery = null;
     vm.categoriesMenuOpened = true;
 
-    //load products by page for selected category.
     vm.searchProducts = function () {
         var pageRequest = {
             pageNumber: vm.productsData.pageNumber - 1,
@@ -105,7 +96,6 @@ app.controller('MainController',['$http', function($http) {
             console.log("GET /products/search request FAILED");
         });
     };
-    vm.searchProducts();
 
     //load all category list.
     $http({ method: 'GET', url: '/categories' }).then(function(response){
@@ -137,4 +127,8 @@ app.controller('MainController',['$http', function($http) {
     vm.toggleCategoriesMenu = function() {
         vm.categoriesMenuOpened = !vm.categoriesMenuOpened;
     };
+
+    $scope.$watch('vm.productsData.pageNumber', function(newValue) {
+        vm.searchProducts();
+    });
 }]);

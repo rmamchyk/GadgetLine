@@ -1,4 +1,4 @@
-﻿app.controller('MainController',['$http', function($http) {
+﻿app.controller('MainController',['$http', '$scope', function($http, $scope) {
     var vm = this;
     vm.names = ['roman', 'natalia', 'ruslan'];
     vm.categories = [];
@@ -12,7 +12,6 @@
     vm.searchQuery = null;
     vm.categoriesMenuOpened = true;
 
-    //load products by page for selected category.
     vm.searchProducts = function () {
         var pageRequest = {
             pageNumber: vm.productsData.pageNumber - 1,
@@ -29,7 +28,6 @@
             console.log("GET /products/search request FAILED");
         });
     };
-    vm.searchProducts();
 
     //load all category list.
     $http({ method: 'GET', url: '/categories' }).then(function(response){
@@ -61,4 +59,8 @@
     vm.toggleCategoriesMenu = function() {
         vm.categoriesMenuOpened = !vm.categoriesMenuOpened;
     };
+
+    $scope.$watch('vm.productsData.pageNumber', function(newValue) {
+        vm.searchProducts();
+    });
 }]);
