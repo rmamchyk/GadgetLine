@@ -1,24 +1,18 @@
+<div>
 <div class="product-list-container container-fluid">
-    <div class="product-view-item col-sm-6 col-md-4 col-lg-3" ng-repeat="item in vm.data.items">
-        <div class="thumbnail">
-            <img src="../../images/no-photo.png">
-            <div class="caption">
-                <a href="#" class="product-title">{{item.title}}</a>
-                <div class="actions">
-                    <span class="product-price pull-left text-nowrap">${{item.price}}</span>
-                    <button class="btn btn-danger add-to-cart-btn pull-right">
-                        <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Купить
-                    </button>
+        <div class="product-view-item col-sm-6 col-md-4 col-lg-3" ng-repeat="item in vm.data.items">
+            <div class="thumbnail">
+                <img src="../../images/no-photo.png">
+                <div class="caption">
+                    <a href="#" class="product-title">{{item.title}}</a>
+                    <div class="actions">
+                        <span class="product-price pull-left text-nowrap">${{item.price}}</span>
+                        <button class="btn btn-danger add-to-cart-btn pull-right">
+                            <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Купить
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<div class="product-list-pagination">
-    <ul uib-pagination
-        total-items="vm.data.totalItems"
-        ng-model="vm.data.pageNumber"
-        items-per-page="vm.data.pageSize"
-        max-size="7"
-        class="pagination-sm" boundary-link-numbers="true" rotate="false"></ul>
+ </div>
 </div>

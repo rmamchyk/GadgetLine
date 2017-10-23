@@ -1,4 +1,10 @@
-﻿.dropdown-submenu {
+﻿.product-list-adjustments .btn.active.focus {
+    outline: none;
+    border-color: #dbdbdb;
+}
+
+/*----- Dropdown-submenu -----*/
+.dropdown-submenu {
     position:relative;
 }
 .dropdown-submenu>.dropdown-menu {
@@ -146,6 +152,10 @@ span.category-subgroup-icon {
     color: white;
 }
 
+
+.product-list-adjustments {
+    padding: 5px;
+}
 
 /*----- Product View Item -----*/
 .product-list-container {
