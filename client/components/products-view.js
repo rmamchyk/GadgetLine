@@ -3,6 +3,8 @@ app.component('productsView', {
     bindings: {
         data: '='
     },
-    controller: function(){ },
+    controller: function(){
+        this.viewMode = 'list';
+    },
     controllerAs: 'vm'
 });

@@ -1,0 +1,22 @@
+<div class="product-list-item row" ng-repeat="item in vm.data.items">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="item-image thumbnail col-xs-3">
+                <img class="img-responsive" src="../../images/no-photo.png">
+            </div>
+            <div class="item-title col-xs-7">
+                <a href="#" class="product-title">{{item.title}}</a>
+            </div>
+            <div class="item-actions col-xs-2">
+                <div class="row">
+                    <span class="product-price pull-left text-nowrap">{{item.price | currency}}</span>
+                </div>
+                <div class="row">
+                    <button class="btn btn-danger add-to-cart-btn">
+                        <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Купить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

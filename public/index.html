@@ -58,27 +58,7 @@
                 </div>
 
                 <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12">
-                    <div class="product-list-adjustments container-fluid">
-                        <div class="btn-group btn-group-sm pull-right" data-toggle="buttons">
-                            <label class="btn btn-default active">
-                                <input type="radio" name="options" id="option1" autocomplete="off">
-                                <span class="glyphicon glyphicon-th"></span>
-                            </label>
-                            <label class="btn btn-default">
-                                <input type="radio" name="options" id="option2" autocomplete="off">
-                                <span class="glyphicon glyphicon-th-list"></span>
-                            </label>
-                        </div>
-                    </div>
                     <products-view data="vm.productsData"></products-view>
-                    <div class="product-list-pagination">
-                        <ul uib-pagination
-                            total-items="vm.data.totalItems"
-                            ng-model="vm.data.pageNumber"
-                            items-per-page="vm.data.pageSize"
-                            max-size="7"
-                            class="pagination-sm" boundary-link-numbers="true" rotate="false"></ul>
-                    </div>
                 </div>
             </div>
         </div>

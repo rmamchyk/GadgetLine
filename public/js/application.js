@@ -39,20 +39,14 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
 });
 
 
-app.component('productsGrid', {
-    templateUrl: '../views/components/products-grid.html',
-    bindings: {
-        data: '='
-    },
-    controller: function(){ },
-    controllerAs: 'vm'
-});
 app.component('productsView', {
     templateUrl: '../views/components/products-view.html',
     bindings: {
         data: '='
     },
-    controller: function(){ },
+    controller: function(){
+        this.viewMode = 'list';
+    },
     controllerAs: 'vm'
 });
 app.controller('EditProductController', ['$scope', '$uibModalInstance', function ($scope, $uibModalInstance, productData) {
