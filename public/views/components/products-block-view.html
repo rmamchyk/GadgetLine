@@ -1,13 +1,17 @@
 <div class="product-block-item col-xs-6 col-sm-6 col-md-4 col-lg-3" ng-repeat="item in vm.data.items">
-    <div class="thumbnail">
-        <img src="../../images/no-photo.png">
-        <div class="caption">
-            <a href="#" class="product-title">{{item.title}}</a>
-            <div class="actions">
-                <span class="product-price pull-left text-nowrap">{{item.price | currency}}</span>
-                <button class="btn btn-danger add-to-cart-btn pull-right">
-                    <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Купить
-                </button>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="thumbnail">
+                <img src="../../images/no-photo.png">
+            </div>
+            <div class="caption">
+                <a href="#" class="product-title">{{item.title}}</a>
+                <div class="actions">
+                    <span class="product-price pull-left text-nowrap">{{item.price | currency}}</span>
+                    <button class="btn btn-danger add-to-cart-btn pull-right">
+                        <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Купить
+                    </button>
+                </div>
             </div>
         </div>
     </div>

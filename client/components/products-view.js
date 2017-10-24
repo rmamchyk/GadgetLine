@@ -4,7 +4,7 @@ app.component('productsView', {
         data: '='
     },
     controller: function(){
-        this.viewMode = 'list';
+        this.viewMode = 'block';
     },
     controllerAs: 'vm'
 });

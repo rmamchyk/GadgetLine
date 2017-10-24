@@ -6,7 +6,7 @@
     vm.productsData = {
             totalItems: 0,
             pageNumber: 1,
-            pageSize: 25,
+            pageSize: 15,
             items: []
     };
     vm.searchQuery = null;

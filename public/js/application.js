@@ -45,7 +45,7 @@ app.component('productsView', {
         data: '='
     },
     controller: function(){
-        this.viewMode = 'list';
+        this.viewMode = 'block';
     },
     controllerAs: 'vm'
 });
@@ -68,7 +68,7 @@ app.controller('MainController',['$http', '$scope', function($http, $scope) {
     vm.productsData = {
             totalItems: 0,
             pageNumber: 1,
-            pageSize: 25,
+            pageSize: 15,
             items: []
     };
     vm.searchQuery = null;

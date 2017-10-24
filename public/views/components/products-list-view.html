@@ -1,13 +1,13 @@
 <div class="product-list-item row" ng-repeat="item in vm.data.items">
     <div class="panel panel-default">
         <div class="panel-body">
-            <div class="item-image thumbnail col-xs-3">
+            <div class="item-image thumbnail col-xs-4 col-sm-3 col-md-3 col-lg-2">
                 <img class="img-responsive" src="../../images/no-photo.png">
             </div>
-            <div class="item-title col-xs-7">
+            <div class="item-title col-xs-5 col-sm-7 col-md-7 col-lg-8">
                 <a href="#" class="product-title">{{item.title}}</a>
             </div>
-            <div class="item-actions col-xs-2">
+            <div class="item-actions col-xs-3 col-sm-2 col-md-2 col-lg-2">
                 <div class="row">
                     <span class="product-price pull-left text-nowrap">{{item.price | currency}}</span>
                 </div>
