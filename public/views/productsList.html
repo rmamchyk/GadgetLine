@@ -1,0 +1,74 @@
+<div ng-controller="ProductsListController as listCtrl">
+    <div class="products-tools-panal container-fluid">
+        <div class="btn-group btn-group-sm pull-right">
+            <label class="btn btn-default" ng-class="{active: listCtrl.viewMode == 'block'}">
+                <input type="radio" ng-model="listCtrl.viewMode" value="block" style="display: none;">
+                <span class="glyphicon glyphicon-th"></span>
+            </label>
+            <label class="btn btn-default" ng-class="{active: listCtrl.viewMode == 'list'}">
+                <input type="radio" ng-model="listCtrl.viewMode" value="list" style="display: none;">
+                <span class="glyphicon glyphicon-list"></span>
+            </label>
+        </div>
+    </div>
+    <div class="product-list-container container-fluid">
+        <!-- Product Block Item -->
+        <div ng-if="listCtrl.viewMode == 'block'">
+            <div class="product-block-item col-xs-6 col-sm-6 col-md-4 col-lg-3"   ng-repeat="item in listCtrl.productsData.items">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="thumbnail">
+                            <img src="../images/no-photo.png">
+                        </div>
+                        <div class="caption">
+                            <a ng-href="#/product/{{item.code}}" class="product-title">{{item.title}}</a>
+                            <div class="actions">
+                                <span class="product-price pull-left text-nowrap">{{item.price | currency}}</span>
+                                <button class="btn btn-danger add-to-cart-btn pull-right">
+                                    <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Купить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product List Item -->
+        <div ng-if="listCtrl.viewMode == 'list'">
+            <div class="product-list-item row" ng-repeat="item in listCtrl.productsData.items">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="item-image thumbnail col-xs-4 col-sm-3 col-md-3 col-lg-2">
+                            <img class="img-responsive" src="../images/no-photo.png">
+                        </div>
+                        <div class="item-title col-xs-5 col-sm-7 col-md-7 col-lg-8">
+                            <a ng-href="#/product/{{item.code}}" class="product-title">{{item.title}}</a>
+                        </div>
+                        <div class="item-actions col-xs-3 col-sm-2 col-md-2 col-lg-2">
+                            <div class="row">
+                                <span class="product-price pull-left text-nowrap">{{item.price | currency}}</span>
+                            </div>
+                            <div class="row">
+                                <button class="btn btn-danger add-to-cart-btn">
+                                    <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Купить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="product-list-pagination">
+        <ul uib-pagination
+            total-items="listCtrl.productsData.totalItems"
+            ng-model="listCtrl.productsData.pageNumber"
+            items-per-page="listCtrl.productsData.pageSize"
+            ng-change="listCtrl.getProducts()"
+            max-size="7"
+            direction-links="false"
+            class="pagination pagination-md" rotate="false"></ul>
+    </div>
+</div>

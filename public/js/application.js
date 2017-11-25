@@ -1,6 +1,27 @@
-var app = angular.module('glApp', ['ui.router', 'ui.bootstrap']);
+var app = angular.module('GadgetLineApp', ['ui.router', 'ui.bootstrap']);
 
-//directives
+//app config
+app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+    $locationProvider.hashPrefix('');
+
+    $urlRouterProvider.otherwise('/');
+
+    $stateProvider
+        .state('home', {
+            url: '/',
+            template: '<div>This is HOME page...</div>'
+        })
+        .state('products', {
+            url: '/products/:categoryId',
+            templateUrl: 'views/productsList.html'
+        })
+        .state('editProduct', {
+            url: '/product/:code',
+            templateUrl: 'views/editProduct.html'
+        });
+});
+
+
 app.directive('toggleClass', function () {
     return {
         restrict: 'A',
@@ -11,6 +32,7 @@ app.directive('toggleClass', function () {
         }
     };
 });
+
 app.directive('myEnter', function () {
     return function (scope, element, attrs) {
 
@@ -26,103 +48,75 @@ app.directive('myEnter', function () {
     };
 });
 
-//app config
-app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
-    $locationProvider.hashPrefix('');
-    $urlRouterProvider.otherwise('/products');
+app.controller('EditProductController', ['$http', '$stateParams', function($http, $params) {
+    var self = this;
 
-    $stateProvider
-        .state('products', {
-            url: '/products',
-            controller: 'MainController'
-        });
-});
-
-
-app.component('productsView', {
-    templateUrl: '../views/components/products-view.html',
-    bindings: {
-        data: '='
-    },
-    controller: function(){
-        this.viewMode = 'block';
-    },
-    controllerAs: 'vm'
-});
-app.controller('EditProductController', ['$scope', '$uibModalInstance', function ($scope, $uibModalInstance, productData) {
-    $scope.product = productData;
-
-    $scope.cancel = function() {
-        $uibModalInstance.dismiss('cancel');
-    };
-
-    $scope.save = function() {
-        $uibModalInstance.close($scope.product);
-    };
+    self.code = $params.code;
 }]);
-app.controller('MainController',['$http', '$scope', function($http, $scope) {
-    var vm = this;
-    vm.names = ['roman', 'natalia', 'ruslan'];
-    vm.categories = [];
-    vm.selectedCategory = {id: 1};
-    vm.productsData = {
-            totalItems: 0,
-            pageNumber: 1,
-            pageSize: 15,
-            items: []
-    };
-    vm.searchQuery = null;
-    vm.categoriesMenuOpened = true;
+app.controller('MainController',['$http', function($http) {
+    var self = this;
 
-    vm.searchProducts = function () {
-        var pageRequest = {
-            pageNumber: vm.productsData.pageNumber - 1,
-            pageSize: vm.productsData.pageSize,
-            categoryId: vm.selectedCategory.id
+    self.categoriesMenuOpened = true;
+
+    self.categories = [];
+
+    self.selectedCategoryId = 1;
+
+    self.searchQuery = '';
+
+    self.loadCategories = function(){
+        $http({ method: 'GET', url: '/categories' }).then(function(response){
+            self.categories = response.data || [];
+        }, function(){
+            console.log("GET /categories request FAILED");
+        });
+    };
+
+    self.toggleCategoriesMenu = function() {
+        self.categoriesMenuOpened = !self.categoriesMenuOpened;
+    };
+
+    self.changeCategory = function(event, category){
+        self.selectedCategoryId = category.id;
+    };
+
+
+    self.searchProducts = function(){
+
+    };
+
+    self.loadCategories();
+}]);
+app.controller('ProductsListController', ['$http', '$scope', '$stateParams', function($http, $scope, $params) {
+    var self = this;
+
+    self.viewMode = 'block';
+
+    self.selectedCategoryId = parseInt($params.categoryId);
+
+    self.productsData = {
+        totalItems: 0,
+        pageNumber: 1,
+        pageSize: 15,
+        items: []
+    };
+
+    self.getProducts = function() {
+        var request = {
+            pageNumber: self.productsData.pageNumber - 1,
+            pageSize: self.productsData.pageSize,
+            categoryId: self.selectedCategoryId
         };
 
-        $http({ method: 'POST', url: '/products/search', data: JSON.stringify(pageRequest)})
+        $http({ method: 'POST', url: '/products/list', data: JSON.stringify(request)})
             .then(function(response){
-            var pageResult = response.data;
-            vm.productsData.items = pageResult.items;
-            vm.productsData.totalItems = pageResult.totalItems;
-        }, function(){
-            console.log("GET /products/search request FAILED");
-        });
+                self.productsData.items = response.data.items;
+                self.productsData.totalItems = response.data.totalItems;
+            }, function(){
+                console.log("GET /products/search request FAILED");
+            });
     };
 
-    //load all category list.
-    $http({ method: 'GET', url: '/categories' }).then(function(response){
-        vm.categories = response.data;
+    self.getProducts();
 
-        if (vm.categories.length > 0) {
-            var prevCategoryId = vm.selectedCategory.id;
-            vm.selectedCategory = vm.categories[0];
-            if(prevCategoryId != vm.selectedCategory.id){
-                vm.productsData.pageNumber = 1;
-                vm.searchProducts();
-            }
-
-        }
-    }, function(){
-        console.log("GET /categories request FAILED");
-    });
-
-    vm.changeCategory = function (event, selected) {
-        var prevCategoryId = vm.selectedCategory.id;
-        vm.selectedCategory = selected;
-        if(prevCategoryId != vm.selectedCategory.id) {
-            vm.productsData.pageNumber = 1;
-            vm.searchProducts();
-        }
-        event.stopPropagation();
-    };
-
-    vm.toggleCategoriesMenu = function() {
-        vm.categoriesMenuOpened = !vm.categoriesMenuOpened;
-    };
-
-    $scope.$watch('vm.productsData.pageNumber', function(newValue) {
-        vm.searchProducts();
-    });
 }]);

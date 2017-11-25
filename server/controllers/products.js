@@ -7,9 +7,10 @@ var jsonParser = bodyParser.json();
 var Products = require(path.join(__dirname, '..', 'models', 'products'));
 
 router
-    .post('/search', jsonParser, function(req, res){
+    .post('/list', jsonParser, function(req, res){
         var searchInfo = req.body || {};
 
+        console.log(req.body);
         Products.getItemsPerPage(searchInfo, function(err, docs){
             if(err){
                 console.log(err);

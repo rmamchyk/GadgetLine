@@ -14,7 +14,7 @@
     <script type="text/javascript" src="js/application.js"></script>
 </head>
 <body>
-    <div ng-app="glApp" ng-controller="MainController as vm">
+    <div ng-app="GadgetLineApp" ng-controller="MainController as mainCtrl">
 
         <!-- Page header -->
         <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="col-lg-4 col-sm-6 col-xs-12" style="margin: 10px 0;">
                         <div class="input-group">
-                            <input type="text" class="form-control" ng-model="searchQuery" my-enter="searchProducts()" placeholder="Поиск товаров">
+                            <input type="text" class="form-control" ng-model="searchQuery" my-enter="mainCtrl.searchProducts()" placeholder="Поиск товаров">
                             <span class="input-group-addon" style="padding: 5px 15px; font-size: 15px;"><span class="glyphicon glyphicon-search"></span></span>
                         </div>
                     </div>
@@ -43,14 +43,14 @@
                 <!-- Categories menu -->
                 <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12">
                     <div id="categories-menu-container">
-                        <div id="categories-menu-btn" ng-click="vm.toggleCategoriesMenu()" toggle-class="menu-displayed">
+                        <div id="categories-menu-btn" ng-click="mainCtrl.toggleCategoriesMenu()" toggle-class="menu-displayed">
                             <span style="font-size: 16px;">Каталог товаров</span><span id="menu-arrow-icon"
-                                ng-class="{'glyphicon-menu-up': vm.categoriesMenuOpened, 'glyphicon-menu-down': !vm.categoriesMenuOpened}" class="glyphicon" aria-hidden="true"></span>
+                                ng-class="{'glyphicon-menu-up': mainCtrl.categoriesMenuOpened, 'glyphicon-menu-down': !mainCtrl.categoriesMenuOpened}" class="glyphicon" aria-hidden="true"></span>
                         </div>
-                        <div id="category-item-list" ng-class="{'menu-displayed' : vm.categoriesMenuOpened, 'menu-hidden': !vm.categoriesMenuOpened}">
+                        <div id="category-item-list" ng-class="{'menu-displayed' : mainCtrl.categoriesMenuOpened, 'menu-hidden': !mainCtrl.categoriesMenuOpened}">
                             <ul>
-                                <li ng-repeat="c in vm.categories" ng-click="vm.changeCategory($event, c)">
-                                    <a>{{c.name}}</a>
+                                <li ng-repeat="c in mainCtrl.categories" ng-click="mainCtrl.changeCategory($event, c)">
+                                    <a ng-href="#/products/{{c.id}}">{{c.name}}</a>
                                 </li>
                             </ul>
                         </div>
@@ -58,10 +58,11 @@
                 </div>
 
                 <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12">
-                    <products-view data="vm.productsData"></products-view>
+                    <div ui-view></div>
                 </div>
             </div>
         </div>
+
     </div>
 
     <!-- Page footer -->

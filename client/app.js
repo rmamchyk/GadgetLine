@@ -1,40 +1,23 @@
-﻿var app = angular.module('glApp', ['ui.router', 'ui.bootstrap']);
-
-//directives
-app.directive('toggleClass', function () {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            element.bind('click', function () {
-                element.toggleClass(attrs.toggleClass);
-            });
-        }
-    };
-});
-app.directive('myEnter', function () {
-    return function (scope, element, attrs) {
-
-        element.bind("keydown keypress", function (event) {
-            if (event.which === 13) {
-                scope.$apply(function () {
-                    scope.$eval(attrs.myEnter);
-                });
-
-                event.preventDefault();
-            }
-        });
-    };
-});
+﻿var app = angular.module('GadgetLineApp', ['ui.router', 'ui.bootstrap']);
 
 //app config
 app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.hashPrefix('');
-    $urlRouterProvider.otherwise('/products');
+
+    $urlRouterProvider.otherwise('/');
 
     $stateProvider
+        .state('home', {
+            url: '/',
+            template: '<div>This is HOME page...</div>'
+        })
         .state('products', {
-            url: '/products',
-            controller: 'MainController'
+            url: '/products/:categoryId',
+            templateUrl: 'views/productsList.html'
+        })
+        .state('editProduct', {
+            url: '/product/:code',
+            templateUrl: 'views/editProduct.html'
         });
 });
 
