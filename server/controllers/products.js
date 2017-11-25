@@ -6,19 +6,24 @@ var jsonParser = bodyParser.json();
 
 var Products = require(path.join(__dirname, '..', 'models', 'products'));
 
-router
-    .post('/list', jsonParser, function(req, res){
+router.post('/list', jsonParser, function(req, res){
         var searchInfo = req.body || {};
 
-        console.log(req.body);
         Products.getItemsPerPage(searchInfo, function(err, docs){
-            if(err){
-                console.log(err);
-            }else{
+            if(!err){
                 res.json(docs);
             }
-
         });
-    });
+});
+
+router.get('/:id', function(req, res){
+    var productId = req.params.id;
+
+    Products.get(productId, function(err, doc){
+        if(!err){
+            res.json(doc);
+        }
+    })
+});
 
 module.exports = router;

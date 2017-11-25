@@ -3,7 +3,7 @@ app.controller('ProductsListController', ['$http', '$scope', '$stateParams', fun
 
     self.viewMode = 'block';
 
-    self.selectedCategoryId = parseInt($params.categoryId);
+    self.selectedCategoryId = parseInt($params.id);
 
     self.productsData = {
         totalItems: 0,

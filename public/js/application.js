@@ -12,11 +12,11 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
             template: '<div>This is HOME page...</div>'
         })
         .state('products', {
-            url: '/products/:categoryId',
+            url: '/products/category/:id',
             templateUrl: 'views/productsList.html'
         })
         .state('editProduct', {
-            url: '/product/:code',
+            url: '/products/:id',
             templateUrl: 'views/editProduct.html'
         });
 });
@@ -48,10 +48,14 @@ app.directive('myEnter', function () {
     };
 });
 
-app.controller('EditProductController', ['$http', '$stateParams', function($http, $params) {
+app.controller('EditProductController', ['$http', '$stateParams', 'Product', function($http, $params, Product) {
     var self = this;
 
-    self.code = $params.code;
+    self.product = {};
+
+    Product.getById(parseInt($params.id), function(data){
+        self.product = data;
+    });
 }]);
 app.controller('MainController',['$http', function($http) {
     var self = this;
@@ -92,7 +96,7 @@ app.controller('ProductsListController', ['$http', '$scope', '$stateParams', fun
 
     self.viewMode = 'block';
 
-    self.selectedCategoryId = parseInt($params.categoryId);
+    self.selectedCategoryId = parseInt($params.id);
 
     self.productsData = {
         totalItems: 0,
@@ -119,4 +123,16 @@ app.controller('ProductsListController', ['$http', '$scope', '$stateParams', fun
 
     self.getProducts();
 
+}]);
+app.factory('Product', ['$http', function ($http){
+    return {
+        getById: function(productId, successCallback){
+            return $http.get('/products/'+productId)
+                .then(function(response){
+                    successCallback(response.data);
+                }, function(){
+                    console.log("GET /products/:id request FAILED");
+                })
+        }
+    }
 }]);

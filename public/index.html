@@ -50,7 +50,7 @@
                         <div id="category-item-list" ng-class="{'menu-displayed' : mainCtrl.categoriesMenuOpened, 'menu-hidden': !mainCtrl.categoriesMenuOpened}">
                             <ul>
                                 <li ng-repeat="c in mainCtrl.categories" ng-click="mainCtrl.changeCategory($event, c)">
-                                    <a ng-href="#/products/{{c.id}}">{{c.name}}</a>
+                                    <a ng-href="#/products/category/{{c.id}}">{{c.name}}</a>
                                 </li>
                             </ul>
                         </div>

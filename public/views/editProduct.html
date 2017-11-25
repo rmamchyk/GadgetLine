@@ -1,8 +1,10 @@
-<div ng-controller="EditProductController as editCtrl">
-    <h4>Editing product with code = {{editCtrl.code}} </h4>
-    <form id="uploadForm" enctype="multipart/form-data" method="post">
-        <input type="file" name="file" />
-
-        <input type="submit" value="Upload File" name="submit">
-    </form>
-</div>
+ <div ng-controller="EditProductController as editCtrl">
+        <h3>{{editCtrl.product.title}}</h3>
+        <p>Код: {{editCtrl.product.code}}</p>
+        <strong>Цена: {{editCtrl.product.price | currency}} </strong>
+        <hr/>
+        <form id="uploadForm" enctype="multipart/form-data" method="post">
+            <input type="file" name="file" />
+            <input type="submit" value="Upload File" name="submit">
+        </form>
+ </div>

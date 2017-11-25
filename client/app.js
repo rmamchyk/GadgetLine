@@ -12,11 +12,11 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
             template: '<div>This is HOME page...</div>'
         })
         .state('products', {
-            url: '/products/:categoryId',
+            url: '/products/category/:id',
             templateUrl: 'views/productsList.html'
         })
         .state('editProduct', {
-            url: '/product/:code',
+            url: '/products/:id',
             templateUrl: 'views/editProduct.html'
         });
 });

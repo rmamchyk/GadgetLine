@@ -1,5 +1,9 @@
-app.controller('EditProductController', ['$http', '$stateParams', function($http, $params) {
+app.controller('EditProductController', ['$http', '$stateParams', 'Product', function($http, $params, Product) {
     var self = this;
 
-    self.code = $params.code;
+    self.product = {};
+
+    Product.getById(parseInt($params.id), function(data){
+        self.product = data;
+    });
 }]);

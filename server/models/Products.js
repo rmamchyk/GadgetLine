@@ -8,6 +8,7 @@ var Products = {
         collection.count({categoryId: searchObj.categoryId}, function(err, count){
             if (err) {
                 console.log("Problem with loading products Count by categoryId in mongodb!");
+                console.log(err);
                 callback(err, null);
             } else {
                 pageResult.totalItems = count;
@@ -23,6 +24,19 @@ var Products = {
                             callback(err, pageResult);
                         }
                     });
+            }
+        });
+    },
+    get: function(id, callback){
+        var collection = mongo.DB.collection('products');
+
+        collection.findOne({code: id}, function(err, doc){
+            if (err) {
+                console.log("Problem with Products.get(id) in mongodb!");
+                console.log(err);
+                callback(err, null);
+            } else {
+                callback(err, doc);
             }
         });
     }
