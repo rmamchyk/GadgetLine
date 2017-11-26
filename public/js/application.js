@@ -48,14 +48,45 @@ app.directive('myEnter', function () {
     };
 });
 
+app.directive("fileModel", function() {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                var model = scope[attrs.fileModel]
+                model.photos = [];
+                model.images = [];
+                element.bind("change", function(event) {
+                    var reader = new FileReader();
+                    reader.onload = function(loadEvent){
+                        scope.$apply(function() {
+                            model.images.push({src: loadEvent.target.result});
+                            model.photos.push(event.target.files[0]);
+                        });
+                    };
+                    reader.readAsDataURL(event.target.files[0]);
+                });
+            }
+        }
+    }
+);
 app.controller('EditProductController', ['$http', '$stateParams', 'Product', function($http, $params, Product) {
     var self = this;
 
-    self.product = {};
+    self.product = {photos: []};
 
     Product.getById(parseInt($params.id), function(data){
         self.product = data;
     });
+
+    self.submit = function(){
+        self.product.photos = [];
+        self.product.photos = self.photos || [];
+        debugger;
+        Product.postProduct(self.product, function(response){
+            self.files = [];
+            self.product.photos = [];
+        });
+    };
 }]);
 app.controller('MainController',['$http', function($http) {
     var self = this;
@@ -127,12 +158,28 @@ app.controller('ProductsListController', ['$http', '$scope', '$stateParams', fun
 app.factory('Product', ['$http', function ($http){
     return {
         getById: function(productId, successCallback){
-            return $http.get('/products/'+productId)
+             $http.get('/products/'+productId)
                 .then(function(response){
                     successCallback(response.data);
                 }, function(){
-                    console.log("GET /products/:id request FAILED");
-                })
+                    console.log("GET /products/:id request has failed.");
+                });
+        },
+        postProduct: function(product, successCallback){
+            var fd = new FormData();
+            debugger;
+            for(var key in product){
+                fd.append(key, product[key]);
+            }
+
+            $http.post('/products/update', fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).then(function(response){
+                successCallback(response.data);
+            }, function(){
+                console.log("POST /products/update request has failed.");
+            });
         }
     }
 }]);

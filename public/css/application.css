@@ -272,6 +272,11 @@ span.category-subgroup-icon {
     padding: 22px 7px;
 }
 
+form#editProduct .thumbnail {
+    margin: 0;
+    padding: 0;
+}
+
 /*----- products pagination panel -----*/
 .product-list-pagination {
     display: block;

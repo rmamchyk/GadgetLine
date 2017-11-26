@@ -23,3 +23,25 @@ app.directive('myEnter', function () {
         });
     };
 });
+
+app.directive("fileModel", function() {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                var model = scope[attrs.fileModel]
+                model.photos = [];
+                model.images = [];
+                element.bind("change", function(event) {
+                    var reader = new FileReader();
+                    reader.onload = function(loadEvent){
+                        scope.$apply(function() {
+                            model.images.push({src: loadEvent.target.result});
+                            model.photos.push(event.target.files[0]);
+                        });
+                    };
+                    reader.readAsDataURL(event.target.files[0]);
+                });
+            }
+        }
+    }
+);
