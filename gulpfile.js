@@ -23,22 +23,18 @@ var run          = require('run-sequence');
 // -------------------------------------
 
 var options = {
-    build: {
-        tasks: ['javascript', 'stylesheets']
-    },
-
     js: {
-        files: [
-            'client/app.js',
-            'client/**/*.js'
-        ],
         vendorFiles: [
             'bower_components/jquery/dist/jquery.js',
+            'bower_components/underscore/underscore.js',
             'bower_components/angular/angular.js',
             'bower_components/angular-ui-router/release/angular-ui-router.js',
             'bower_components/bootstrap/dist/js/bootstrap.js',
             'bower_components/angular-bootstrap/ui-bootstrap.js',
             'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'
+        ],
+        files: [
+            'client/**/*.js'
         ],
         destFile: 'application.js',
         destVendorFile: 'vendor.js',
@@ -46,30 +42,20 @@ var options = {
     },
     css: {
         files: [
-            'client/css/common.css',
             'client/css/**/*.css'
         ],
         vendorFiles: [
             'bower_components/bootstrap/dist/css/bootstrap.css',
             'bower_components/bootstrap/dist/css/bootstrap-theme.css'
         ],
-        destFile: 'application.css',
         destVendorFile: 'vendor.css',
+        destFile: 'application.css',
         destDir: 'public/css'
     }
 };
 
-
 // -------------------------------------
-//   Task: build
-// -------------------------------------
-
-gulp.task('build', function() {
-    run(options.build.tasks);
-});
-
-// -------------------------------------
-//   Task: JavaScript
+//   Task: javascript
 // -------------------------------------
 
 gulp.task('javascript', function() {
@@ -87,7 +73,7 @@ gulp.task('javascript', function() {
 });
 
 // -------------------------------------
-//   Task: JavaScript
+//   Task: stylesheets
 // -------------------------------------
 
 gulp.task('stylesheets', function() {
@@ -109,8 +95,11 @@ gulp.task('stylesheets', function() {
 // -------------------------------------
 
 gulp.task('default', function() {
-    watch(options.js.files, function(files) {
-        run(options.build.tasks);
+    watch(options.js.files.concat(options.js.vendorFiles), function() {
+        run(['javascript']);
+    });
+    watch(options.css.files.concat(options.css.vendorFiles), function() {
+        run(['stylesheets']);
     });
 });
 

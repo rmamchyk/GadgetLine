@@ -6,7 +6,7 @@ var express = require('express');
 var app = express();
 
 // Connect to Mongo
-var dbConnection = require(path.join(__dirname, 'services', 'dbConnection'));
+var dbConnection = require(path.join(__dirname, 'common', 'dbConnection'));
 dbConnection.connect();
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
@@ -19,8 +19,8 @@ app.get('/', function(req, res){
     res.send("Hi there! I'm GadgetLine ExpressJS service.\n");
 });
 
-app.listen(8181, function(){
-    console.log('Listening on port 8181...');
+app.listen(3131, function(){
+    console.log('Listening on port 3131...');
 });
 
 module.exports = app;

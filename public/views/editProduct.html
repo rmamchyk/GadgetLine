@@ -1,5 +1,4 @@
 <div class="container-fluid" ng-controller="EditProductController as editCtrl">
-    <form id="editProduct">
         <div class="row">
             <h3 class="panel-title">{{editCtrl.product.title}}</h3>
             <hr/>
@@ -7,8 +6,7 @@
 
         <div class="row" style="margin-bottom: 5px;">
             <div class="thumbnail col-xs-6 col-sm-5 col-md-4 col-lg-3">
-                <img class="img-responsive"
-                     ng-src="{{editCtrl.product.images ? editCtrl.product.images[0] : '../images/no-photo.png'}}">
+                <img class="img-responsive" ng-src="{{editCtrl.product.images && editCtrl.product.images.length > 0 ? '../uploads/' + editCtrl.product.images[0] : '../images/no-photo.png'}}">
             </div>
 
             <div style="margin-left: 10px; display: inline-block;">
@@ -19,24 +17,24 @@
 
         <div class="row" style="margin-bottom: 5px;" ng-if="editCtrl.product.images || editCtrl.previews">
            <div class="thumbnail col-xs-2 col-sm-2 col-md-1 col-lg-1" ng-repeat="img in editCtrl.product.images" style="margin-right: 5px;">
-               <img class="img-responsive" ng-src="{{img}}"/>
+               <img class="img-responsive" ng-src="{{'../uploads/' + img}}"/>
            </div>
-           <div class="thumbnail col-xs-2 col-sm-2 col-md-1 col-lg-1" ng-repeat="preview in editCtrl.images" style="margin-right: 5px;">
+           <div class="thumbnail col-xs-2 col-sm-2 col-md-1 col-lg-1" ng-repeat="preview in editCtrl.previews" style="margin-right: 5px;">
                <img class="img-responsive" ng-src="{{preview.src}}"/>
            </div>
         </div>
 
+    <form id="uploadForm" enctype="multipart/form-data" method="post">
         <div class="row"  style="margin-bottom: 5px;">
             <label class="btn btn-default btn-file btn-sm">
                 <span class="glyphicon glyphicon-camera"></span> Добавить фото
-                <input type="file" file-model="editCtrl" style="display: none;">
+                <input type="file" name="photos" file-model="editCtrl" style="display: none;">
             </label>
-            <button type="submit" ng-click="editCtrl.submit()" class="btn btn-danger btn-sm pull-right">
+            <button type="button" ng-click="editCtrl.submit()" class="btn btn-danger btn-sm pull-right">
                 <span class="glyphicon glyphicon-ok"></span> Сохранить
             </button>
         </div>
     </form>
-    {{editCtrl}}
 </div>
 
 

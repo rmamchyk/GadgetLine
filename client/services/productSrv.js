@@ -1,26 +1,31 @@
-app.factory('Product', ['$http', function ($http){
+app.factory('Product', ['$http', '_', function ($http, _) {
     return {
-        getById: function(productId, successCallback){
-             $http.get('/products/'+productId)
-                .then(function(response){
+        get: function (id, successCallback) {
+            $http.get('/products/' + id)
+                .then(function (response) {
                     successCallback(response.data);
-                }, function(){
+                }, function () {
                     console.log("GET /products/:id request has failed.");
                 });
         },
-        postProduct: function(product, successCallback){
+        post: function (product, successCallback) {
             var fd = new FormData();
-            debugger;
-            for(var key in product){
-                fd.append(key, product[key]);
+            for (var key in product) {
+                if (Array.isArray(product[key]) && product[key].length > 0) {
+                    _.each(product[key], function (item) {
+                        fd.append(key+'[]', item);
+                    });
+                } else {
+                    fd.append(key, product[key]);
+                }
             }
 
             $http.post('/products/update', fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
-            }).then(function(response){
+            }).then(function (response) {
                 successCallback(response.data);
-            }, function(){
+            }, function () {
                 console.log("POST /products/update request has failed.");
             });
         }

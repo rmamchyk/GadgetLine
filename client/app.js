@@ -1,5 +1,8 @@
 ﻿var app = angular.module('GadgetLineApp', ['ui.router', 'ui.bootstrap']);
 
+//app constants
+app.constant('_', window._);
+
 //app config
 app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.hashPrefix('');

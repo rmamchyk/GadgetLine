@@ -1,5 +1,8 @@
 var app = angular.module('GadgetLineApp', ['ui.router', 'ui.bootstrap']);
 
+//app constants
+app.constant('_', window._);
+
 //app config
 app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.hashPrefix('');
@@ -54,13 +57,16 @@ app.directive("fileModel", function() {
             link: function(scope, element, attrs) {
                 var model = scope[attrs.fileModel]
                 model.photos = [];
-                model.images = [];
+                model.previews = [];
                 element.bind("change", function(event) {
+                    var selectedFile = event.target.files[0];
+                    model.photos.push(selectedFile);
+
                     var reader = new FileReader();
                     reader.onload = function(loadEvent){
                         scope.$apply(function() {
-                            model.images.push({src: loadEvent.target.result});
-                            model.photos.push(event.target.files[0]);
+                            model.previews.push({src: loadEvent.target.result});
+
                         });
                     };
                     reader.readAsDataURL(event.target.files[0]);
@@ -69,22 +75,38 @@ app.directive("fileModel", function() {
         }
     }
 );
-app.controller('EditProductController', ['$http', '$stateParams', 'Product', function($http, $params, Product) {
+app.controller('EditProductController', ['$http', '$stateParams', 'Product', '_', function($http, $params, Product, _) {
     var self = this;
+
+    self.photos = [];
+    self.previews = [];
 
     self.product = {photos: []};
 
-    Product.getById(parseInt($params.id), function(data){
-        self.product = data;
+    Product.get($params.id, function(data){
+        if(data){
+            self.product._id = data._id;
+            self.product.code = data.code;
+            self.product.title = data.title;
+            self.product.price = data.price;
+            self.product.categoryId = data.categoryId;
+            self.product.images = data.images || [];
+        }
     });
 
     self.submit = function(){
         self.product.photos = [];
-        self.product.photos = self.photos || [];
-        debugger;
-        Product.postProduct(self.product, function(response){
-            self.files = [];
-            self.product.photos = [];
+        _.each(self.photos || [], function(item){
+            self.product.photos.push(item);
+        });
+        Product.post(self.product, function(res){
+            if(res.success){
+                console.log(res.product);
+                res.product.photos = [];
+                self.product = res.product;
+            }
+            self.photos = [];
+            self.previews = [];
         });
     };
 }]);
@@ -155,29 +177,34 @@ app.controller('ProductsListController', ['$http', '$scope', '$stateParams', fun
     self.getProducts();
 
 }]);
-app.factory('Product', ['$http', function ($http){
+app.factory('Product', ['$http', '_', function ($http, _) {
     return {
-        getById: function(productId, successCallback){
-             $http.get('/products/'+productId)
-                .then(function(response){
+        get: function (id, successCallback) {
+            $http.get('/products/' + id)
+                .then(function (response) {
                     successCallback(response.data);
-                }, function(){
+                }, function () {
                     console.log("GET /products/:id request has failed.");
                 });
         },
-        postProduct: function(product, successCallback){
+        post: function (product, successCallback) {
             var fd = new FormData();
-            debugger;
-            for(var key in product){
-                fd.append(key, product[key]);
+            for (var key in product) {
+                if (Array.isArray(product[key]) && product[key].length > 0) {
+                    _.each(product[key], function (item) {
+                        fd.append(key+'[]', item);
+                    });
+                } else {
+                    fd.append(key, product[key]);
+                }
             }
 
             $http.post('/products/update', fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
-            }).then(function(response){
+            }).then(function (response) {
                 successCallback(response.data);
-            }, function(){
+            }, function () {
                 console.log("POST /products/update request has failed.");
             });
         }

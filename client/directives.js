@@ -30,13 +30,16 @@ app.directive("fileModel", function() {
             link: function(scope, element, attrs) {
                 var model = scope[attrs.fileModel]
                 model.photos = [];
-                model.images = [];
+                model.previews = [];
                 element.bind("change", function(event) {
+                    var selectedFile = event.target.files[0];
+                    model.photos.push(selectedFile);
+
                     var reader = new FileReader();
                     reader.onload = function(loadEvent){
                         scope.$apply(function() {
-                            model.images.push({src: loadEvent.target.result});
-                            model.photos.push(event.target.files[0]);
+                            model.previews.push({src: loadEvent.target.result});
+
                         });
                     };
                     reader.readAsDataURL(event.target.files[0]);
