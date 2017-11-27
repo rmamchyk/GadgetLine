@@ -25,7 +25,7 @@ app.controller('EditProductController', ['$http', '$stateParams', 'Product', '_'
     self.submit = function () {
         self.product.photos = [];
         _.each(self.photos || [], function (item) {
-            //Todo: Store a new photo with filename as: product.code + '-' + unique file id.
+            //TODO: Upload a new photo with filename like: product.code + '-' + unique file id + file extention.
             //item.code = self.product.code;
             //item.name = self.product.code + '.' + getFileExtension(item.name);
             self.product.photos.push(item);
