@@ -4,18 +4,188 @@
 
 /* Portrait & landscape phone */
 @media (max-width: 480px) {
+    .product-block-item {
+        max-height: 400px;
+        width: 100%;
+    }
 
+    .product-block-item .thumbnail {
+        height: 290px;
+    }
+
+    .product-list-item .thumbnail {
+        width: 50%;
+        height: 250px;
+    }
+
+    #edit-product .thumbnail.active {
+        width: 100%;
+        height: 315px;
+    }
+
+    #edit-product .thumbnail.mini {
+        width: 25%;
+        height: 90px;
+        margin-right: 12px !important;
+    }
+}
+
+@media (min-width: 480px) {
+    .product-block-item {
+        max-height: 390px;
+        width: 50%;
+    }
+
+    .product-block-item .thumbnail {
+        height: 280px;
+    }
+
+    .product-list-item .thumbnail {
+        width: 18%;
+        height: 120px;
+    }
+
+    #edit-product .thumbnail.active {
+        width: 40%;
+        height: 260px;
+    }
+
+    #edit-product .thumbnail.mini {
+        width: 12%;
+        height: 75px;
+    }
 }
 
 /* Landscape phone to portrait tablet */
-@media (max-width: 768px) {
+@media (min-width: 768px){
+    .product-block-item {
+        max-height: 365px;
+        width: 33.33%;
+    }
 
+    .product-block-item .thumbnail {
+        height: 240px;
+    }
+
+    .product-list-item .thumbnail {
+        width: 19%;
+        height: 120px;
+    }
+
+    #edit-product .thumbnail.active {
+        width: 40%;
+        height: 280px;
+    }
+
+    #edit-product .thumbnail.mini {
+        width: 12%;
+        height: 85px;
+    }
+}
+
+@media (min-width: 992px){
+    .product-block-item {
+        max-height: 380px;
+        width: 33.33%;
+    }
+
+    .product-block-item .thumbnail {
+        height: 270px;
+    }
+
+    .product-list-item .thumbnail {
+        width: 18%;
+        height: 150px;
+    }
+
+    #edit-product .thumbnail.active {
+        width: 35%;
+        height: 290px;
+    }
+
+    #edit-product .thumbnail.mini {
+        width: 10%;
+        height: 95px;
+    }
 }
 
 /* Large desktop */
 @media (min-width: 1200px) {
+    .product-block-item {
+        max-height: 385px;
+        width: 25%;
+    }
 
+    .product-block-item .thumbnail {
+        width: 100%;
+        height: 275px;
+    }
+
+    .product-list-item .thumbnail {
+        width: 15%;
+        height: 180px;
+    }
+
+    #edit-product .thumbnail.active {
+        width: 27%;
+        height: 350px;
+    }
+
+    #edit-product .thumbnail.mini {
+        width: 8%;
+        height: 100px;
+    }
 }
+
+form#edit-product .thumbnail.active {
+    margin: 0 0 7px 0;
+    padding: 0;
+}
+
+form#edit-product .thumbnail.mini {
+    margin: 0 15px 5px 0;
+    padding: 0;
+}
+
+/*----- Products grid (panel view) -----*/
+.product-block-item{
+    float: left;
+}
+
+.product-block-item .panel {
+    height: 100%;
+    border-radius: 0;
+}
+
+.thumbnail {
+    text-align: center;
+    position: relative;
+    white-space: nowrap; /* this is required unless you put the helper span closely near the img */
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    font-size: 0 !important;
+}
+
+.vertical-aligner {
+    display: inline-block !important;
+    height: 100%;
+    vertical-align: middle;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.thumbnail img {
+    vertical-align: middle;
+    display: inline-block !important;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+
+
+/*----- Products grid (line view) -----*/
 
 
 /*----- Dropdown-submenu -----*/
@@ -289,11 +459,6 @@ span.category-subgroup-icon {
 }
 .product-list-item .item-actions {
     padding: 22px 7px;
-}
-
-form#editProduct .thumbnail {
-    margin: 0;
-    padding: 0;
 }
 
 /*----- products pagination panel -----*/

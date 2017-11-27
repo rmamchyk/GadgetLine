@@ -12,16 +12,17 @@ var storage = multer.diskStorage({
         callback(null, path.join(__dirname, '../../', 'public/uploads/'))
     },
     filename: function(req, file, callback) {
-        console.log(req.body);
+        var product = req.body;
+        console.log(product);
         var imageId = Math.random().toString(36).substr(2, 9);
 
-        var imageName = req.body.code + '-' + imageId + path.extname(file.originalname);
-
-        if(!req.body.images || !Array.isArray(req.body.images) || !_.some(req.body.images, function(img){return img && img.length>0})){
-            req.body.images = [];
+        var imageName = product.code + '-' + imageId + path.extname(file.originalname);
+        console.log(imageName);
+        if(!product.images || !Array.isArray(product.images) || !_.some(product.images, function(img){return img && img.length>0})){
+            product.images = [];
         }
 
-        req.body.images.push(imageName);
+        product.images.push(imageName);
         callback(null, imageName)
     }
 });

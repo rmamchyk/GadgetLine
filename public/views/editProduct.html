@@ -1,30 +1,33 @@
 <div class="container-fluid" ng-controller="EditProductController as editCtrl">
+    <form id="edit-product" enctype="multipart/form-data" method="post">
         <div class="row">
             <h3 class="panel-title">{{editCtrl.product.title}}</h3>
             <hr/>
         </div>
 
         <div class="row" style="margin-bottom: 5px;">
-            <div class="thumbnail col-xs-6 col-sm-5 col-md-4 col-lg-3">
+            <div class="thumbnail active pull-left">
+                <span class="vertical-aligner"></span>
                 <img class="img-responsive" ng-src="{{editCtrl.product.images && editCtrl.product.images.length > 0 ? '../uploads/' + editCtrl.product.images[0] : '../images/no-photo.png'}}">
             </div>
 
-            <div style="margin-left: 10px; display: inline-block;">
+            <div class="pull-left" style="margin-left: 10px; display: inline-block;">
                 <p>Код: {{editCtrl.product.code}}</p>
                 <strong>Цена: {{editCtrl.product.price | currency}} </strong>
             </div>
         </div>
 
         <div class="row" style="margin-bottom: 5px;" ng-if="editCtrl.product.images || editCtrl.previews">
-           <div class="thumbnail col-xs-2 col-sm-2 col-md-1 col-lg-1" ng-repeat="img in editCtrl.product.images" style="margin-right: 5px;">
+           <div class="thumbnail mini pull-left" ng-repeat="img in editCtrl.product.images">
+               <span class="vertical-aligner"></span>
                <img class="img-responsive" ng-src="{{'../uploads/' + img}}"/>
            </div>
-           <div class="thumbnail col-xs-2 col-sm-2 col-md-1 col-lg-1" ng-repeat="preview in editCtrl.previews" style="margin-right: 5px;">
+           <div class="thumbnail mini pull-left" ng-repeat="preview in editCtrl.previews">
+               <span class="vertical-aligner"></span>
                <img class="img-responsive" ng-src="{{preview.src}}"/>
            </div>
         </div>
 
-    <form id="uploadForm" enctype="multipart/form-data" method="post">
         <div class="row"  style="margin-bottom: 5px;">
             <label class="btn btn-default btn-file btn-sm">
                 <span class="glyphicon glyphicon-camera"></span> Добавить фото
