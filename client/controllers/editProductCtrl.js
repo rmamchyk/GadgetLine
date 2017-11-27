@@ -1,4 +1,4 @@
-app.controller('EditProductController', ['$http', '$stateParams', 'Product', '_', function($http, $params, Product, _) {
+app.controller('EditProductController', ['$http', '$stateParams', 'Product', '_', function ($http, $params, Product, _) {
     var self = this;
 
     self.photos = [];
@@ -6,8 +6,8 @@ app.controller('EditProductController', ['$http', '$stateParams', 'Product', '_'
 
     self.product = {photos: []};
 
-    Product.get($params.id, function(data){
-        if(data){
+    Product.get($params.id, function (data) {
+        if (data) {
             self.product._id = data._id;
             self.product.code = data.code;
             self.product.title = data.title;
@@ -17,13 +17,21 @@ app.controller('EditProductController', ['$http', '$stateParams', 'Product', '_'
         }
     });
 
-    self.submit = function(){
+    var getFileExtension = function (filename) {
+        var r = /.+\.(.+)$/.exec(filename);
+        return r ? r[1] : null;
+    };
+
+    self.submit = function () {
         self.product.photos = [];
-        _.each(self.photos || [], function(item){
+        _.each(self.photos || [], function (item) {
+            item.code = self.product.code;
+            item.name = self.product.code + '.' + getFileExtension(item.name);
+            debugger;
             self.product.photos.push(item);
         });
-        Product.post(self.product, function(res){
-            if(res.success){
+        Product.post(self.product, function (res) {
+            if (res.success) {
                 console.log(res.product);
                 res.product.photos = [];
                 self.product = res.product;

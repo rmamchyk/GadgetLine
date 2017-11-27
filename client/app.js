@@ -18,6 +18,10 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
             url: '/contacts',
             templateUrl: 'views/contacts.html'
         })
+        .state('services', {
+            url: '/services',
+            templateUrl: 'views/services.html'
+        })
         .state('products', {
             url: '/products/category/:id',
             templateUrl: 'views/productsList.html'
