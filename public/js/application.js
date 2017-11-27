@@ -110,9 +110,9 @@ app.controller('EditProductController', ['$http', '$stateParams', 'Product', '_'
     self.submit = function () {
         self.product.photos = [];
         _.each(self.photos || [], function (item) {
-            item.code = self.product.code;
-            item.name = self.product.code + '.' + getFileExtension(item.name);
-            debugger;
+            //Todo: Store a new photo with filename as: product.code + '-' + random id.
+            //item.code = self.product.code;
+            //item.name = self.product.code + '.' + getFileExtension(item.name);
             self.product.photos.push(item);
         });
         Product.post(self.product, function (res) {
