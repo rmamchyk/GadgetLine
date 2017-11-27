@@ -14,6 +14,10 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
             url: '/',
             template: '<div>This is HOME page...</div>'
         })
+        .state('contacts', {
+            url: '/contacts',
+            templateUrl: 'views/contacts.html'
+        })
         .state('products', {
             url: '/products/category/:id',
             templateUrl: 'views/productsList.html'
@@ -190,10 +194,12 @@ app.factory('Product', ['$http', '_', function ($http, _) {
         post: function (product, successCallback) {
             var fd = new FormData();
             for (var key in product) {
-                if (Array.isArray(product[key]) && product[key].length > 0) {
-                    _.each(product[key], function (item) {
-                        fd.append(key+'[]', item);
-                    });
+                if (product[key] && Array.isArray(product[key])) {
+                    if(product[key].length){
+                        _.each(product[key], function (item) {
+                            fd.append(key+'[]', item);
+                        });
+                    }
                 } else {
                     fd.append(key, product[key]);
                 }
