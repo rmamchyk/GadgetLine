@@ -8,7 +8,7 @@
         <div class="row" style="margin-bottom: 5px;">
             <div class="thumbnail active pull-left">
                 <span class="vertical-aligner"></span>
-                <img class="img-responsive" ng-src="{{editCtrl.product.images && editCtrl.product.images.length > 0 ? '../uploads/' + editCtrl.product.images[0] : '../images/no-photo.png'}}">
+                <img class="img-responsive" ng-src="{{editCtrl.mainImage}}">
             </div>
 
             <div class="pull-left" style="margin-left: 10px; display: inline-block;">
@@ -18,20 +18,33 @@
         </div>
 
         <div class="row" style="margin-bottom: 5px;" ng-if="editCtrl.product.images || editCtrl.previews">
-           <div class="thumbnail mini pull-left" ng-repeat="img in editCtrl.product.images">
-               <span class="vertical-aligner"></span>
-               <img class="img-responsive" ng-src="{{'../uploads/' + img}}"/>
-           </div>
-           <div class="thumbnail mini pull-left" ng-repeat="preview in editCtrl.previews">
-               <span class="vertical-aligner"></span>
-               <img class="img-responsive" ng-src="{{preview.src}}"/>
-           </div>
+            <div class="thumbnail-mini pull-left" ng-repeat="img in editCtrl.product.images" ng-class="{'selected': '../uploads/' + img == editCtrl.mainImage}">
+                <div style="text-align: right; font-size: 12px; line-height: 12px;">
+                    <span ng-click="editCtrl.deleteImage(img)" style="cursor: pointer;" class="glyphicon glyphicon-remove"></span></div>
+                <div>
+                    <div class="thumbnail" ng-click="editCtrl.selectImage(img)">
+                        <span class="vertical-aligner"></span>
+                        <img class="img-responsive" ng-src="{{'../uploads/' + img}}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="thumbnail-mini pull-left" ng-repeat="preview in editCtrl.previews" ng-class="{'selected': preview.src == editCtrl.mainImage}">
+                <div style="text-align: right; font-size: 12px; line-height: 12px;">
+                    <span ng-click="editCtrl.deletePreview(preview)" style="cursor: pointer;" class="glyphicon glyphicon-remove"></span></div>
+                <div>
+                    <div class="thumbnail" ng-click="editCtrl.selectPreview(preview)">
+                        <span class="vertical-aligner"></span>
+                        <img class="img-responsive" ng-src="{{preview.src}}"/>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-        <div class="row"  style="margin-bottom: 5px;">
+        <div class="row" style="margin-bottom: 5px;">
             <label class="btn btn-default btn-file btn-sm">
                 <span class="glyphicon glyphicon-camera"></span> Добавить фото
-                <input type="file" name="photos" file-model="editCtrl" style="display: none;">
+                <input type="file" name="photos" file-model="editCtrl" accept="image/jpeg, image/png" style="display: none;">
             </label>
         </div>
         <hr/>

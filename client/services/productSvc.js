@@ -12,15 +12,19 @@ app.factory('Product', ['$http', '_', function ($http, _) {
             var fd = new FormData();
             for (var key in product) {
                 if (product[key] && Array.isArray(product[key])) {
-                    if(product[key].length){
+                    if (product[key].length) {
                         _.each(product[key], function (item) {
-                            fd.append(key+'[]', item);
+                            fd.append(key + '[]', item);
                         });
                     }
                 } else {
                     fd.append(key, product[key]);
                 }
             }
+
+            _.each(product.photos, function (file) {
+                fd.append('images[]', file.name);
+            });
 
             $http.post('/products/update', fd, {
                 transformRequest: angular.identity,

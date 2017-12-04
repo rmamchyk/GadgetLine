@@ -66,18 +66,45 @@ app.directive("fileModel", function() {
                 var model = scope[attrs.fileModel]
                 model.photos = [];
                 model.previews = [];
+
+                function getFileExtension(filename) {
+                    var r = /.+\.(.+)$/.exec(filename);
+                    return r ? r[1] : null;
+                }
+
+                function arrayBufferToBase64( buffer ) {
+                    var binary = '';
+                    var bytes = new Uint8Array( buffer );
+                    var len = bytes.byteLength;
+                    for (var i = 0; i < len; i++) {
+                        binary += String.fromCharCode( bytes[ i ] );
+                    }
+                    return window.btoa( binary );
+                }
+
+                function base64ToArrayBuffer(base64) {
+                    var binary_string =  window.atob(base64);
+                    var len = binary_string.length;
+                    var bytes = new Uint8Array( len );
+                    for (var i = 0; i < len; i++)        {
+                        bytes[i] = binary_string.charCodeAt(i);
+                    }
+                    return bytes.buffer;
+                }
+
                 element.bind("change", function(event) {
                     var selectedFile = event.target.files[0];
-                    model.photos.push(selectedFile);
-
                     var reader = new FileReader();
                     reader.onload = function(loadEvent){
+                        var fileName = model.product.code + '-' + Math.random().toString(36).substr(2, 9) + '.' + getFileExtension(selectedFile.name);
+                        var fileDataURL = 'data:' + selectedFile.type +';base64,' + arrayBufferToBase64(loadEvent.target.result);
                         scope.$apply(function() {
-                            model.previews.push({src: loadEvent.target.result});
-
+                            model.previews.push({name: fileName, src: fileDataURL});
+                            model.mainImage = fileDataURL;
+                            model.photos.push(new File([loadEvent.target.result], fileName, {type: selectedFile.type}));
                         });
                     };
-                    reader.readAsDataURL(event.target.files[0]);
+                    reader.readAsArrayBuffer(selectedFile);
                 });
             }
         }
@@ -88,6 +115,7 @@ app.controller('EditProductController', ['$http', '$stateParams', 'Product', '_'
 
     self.photos = [];
     self.previews = [];
+    self.mainImage = '../images/no-photo.png';
 
     self.product = {photos: []};
 
@@ -99,30 +127,71 @@ app.controller('EditProductController', ['$http', '$stateParams', 'Product', '_'
             self.product.price = data.price;
             self.product.categoryId = data.categoryId;
             self.product.images = data.images || [];
+            if(self.product.images && self.product.images.length > 0){
+                self.mainImage = '../uploads/' + self.product.images[0];
+            }
         }
     });
 
-    var getFileExtension = function (filename) {
-        var r = /.+\.(.+)$/.exec(filename);
-        return r ? r[1] : null;
+    self.selectImage = function(img){
+        self.mainImage = '../uploads/' + img;
+    };
+
+    self.selectPreview = function(preview){
+        self.mainImage = preview.src;
+    };
+
+    self.deleteImage = function(img){
+        var imgIndex = self.product.images.indexOf(img);
+        if(imgIndex > -1){
+            if(self.product.images.length == 1){
+                if(self.previews.length > 0){
+                    self.mainImage = self.previews[0].src;
+                }else{
+                    self.mainImage = '../images/no-photo.png';
+                }
+                self.product.images.splice(imgIndex, 1);
+            }else{
+                self.product.images.splice(imgIndex, 1);
+                self.mainImage = '../uploads/' + self.product.images[0];
+            }
+        }
+    };
+
+    self.deletePreview = function(preview){
+        var previewIndex = self.previews.indexOf(preview);
+        if(previewIndex > -1){
+            if(self.previews.length == 1){
+                if(self.product.images.length > 0){
+                    self.mainImage = '../uploads/' + self.product.images[0];
+                }else{
+                    self.mainImage = '../images/no-photo.png';
+                }
+                self.previews.splice(previewIndex, 1);
+                self.photos.splice(previewIndex, 1);
+            }else{
+                self.previews.splice(previewIndex, 1);
+                self.photos.splice(previewIndex, 1);
+                self.mainImage = self.previews[0].src;
+            }
+        }
     };
 
     self.submit = function () {
         self.product.photos = [];
         _.each(self.photos || [], function (item) {
-            //TODO: Upload a new photo with filename like: product.code + '-' + unique file id + file extention.
-            //item.code = self.product.code;
-            //item.name = self.product.code + '.' + getFileExtension(item.name);
             self.product.photos.push(item);
         });
         Product.post(self.product, function (res) {
             if (res.success) {
-                console.log(res.product);
                 res.product.photos = [];
                 self.product = res.product;
+                if(self.product.images && self.product.images.length > 0){
+                    self.mainImage = '../uploads/' + self.product.images[0];
+                }
+                self.photos = [];
+                self.previews = [];
             }
-            self.photos = [];
-            self.previews = [];
         });
     };
 }]);
@@ -207,15 +276,19 @@ app.factory('Product', ['$http', '_', function ($http, _) {
             var fd = new FormData();
             for (var key in product) {
                 if (product[key] && Array.isArray(product[key])) {
-                    if(product[key].length){
+                    if (product[key].length) {
                         _.each(product[key], function (item) {
-                            fd.append(key+'[]', item);
+                            fd.append(key + '[]', item);
                         });
                     }
                 } else {
                     fd.append(key, product[key]);
                 }
             }
+
+            _.each(product.photos, function (file) {
+                fd.append('images[]', file.name);
+            });
 
             $http.post('/products/update', fd, {
                 transformRequest: angular.identity,

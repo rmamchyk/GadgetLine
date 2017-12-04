@@ -5,25 +5,7 @@ var bodyParser = require("body-parser");
 var jsonParser = bodyParser.json();
 var multer = require('multer');
 var _ = require('underscore');
-
-//uploading product photos
-var storage = multer.diskStorage({
-    destination: function(req, file, callback) {
-        callback(null, path.join(__dirname, '../../', 'public/uploads/'))
-    },
-    filename: function(req, file, callback) {
-        var imageId = Math.random().toString(36).substr(2, 9);
-        var imageName = req.body.code + '-' + imageId + path.extname(file.originalname);
-
-        if(!req.body.images || !Array.isArray(req.body.images) || !_.some(req.body.images, function(img){return img && img.length>0})){
-            req.body.images = [];
-        }
-
-        req.body.images.push(imageName);
-        callback(null, imageName)
-    }
-});
-var upload = multer({storage: storage});
+var fs = require('fs');
 
 var Products = require(path.join(__dirname, '..', 'services', 'products'));
 
@@ -47,19 +29,52 @@ router.get('/:id', function(req, res){
     })
 });
 
-router.post('/update', upload.fields([{ name: 'photos[]', maxCount: 10 }]), function(req, res){
-    var data = req.body;
-    var product = {
-        _id: data._id,
-        code: data.code,
-        title: data.title,
-        price: parseFloat(data.price),
-        categoryId: parseInt(data.categoryId),
-        images: data.images || []
-    };
+//uploading product images
+var storage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, path.join(__dirname, '../../', 'public/uploads/'))
+    },
+    filename: function(req, file, callback) {
+        callback(null, file.originalname)
+    }
+});
+var upload = multer({storage: storage}).fields([{ name: 'photos[]', maxCount: 10 }]);
+router.post('/update', function(req, res){
+    upload(req, res, function(err){
+        if(!err){
+            var data = req.body;
+            var product = {
+                _id: data._id,
+                code: data.code,
+                title: data.title,
+                price: parseFloat(data.price),
+                categoryId: parseInt(data.categoryId),
+                images: data.images || []
+            };
+            Products.get(product.code, function(err, existing){
+                if(!err){
+                    var filesToDelete = _.filter(existing.images || [], function(img){
+                        return !_.contains(product.images, img);
+                    });
 
-    Products.update(product, function(err){
-        res.json({success: !err, product: product});
+                    console.log('Files to delete: ' + filesToDelete);
+
+                    _.each(filesToDelete, function(filename){
+                        fs.unlink(path.join(__dirname, '../../', 'public/uploads/')+filename, function(err) {
+                            if (err) {
+                                console.log('Problem with deleting file ' + filename)
+                            }else{
+                                console.log('Deleted '+filename+'!');
+                            }
+                        });
+                    });
+
+                    Products.update(product, function(err){
+                        res.json({success: !err, product: product});
+                    });
+                }
+            });
+        }
     });
 });
 
